@@ -8,10 +8,10 @@ import { useState } from "react";
 import { BasicInformationStep } from "@/components/dialog/variants/varianst-form/BasicInformation";
 
 export function ProductVariantPage({ productId }: { productId: string }) {
-  const {data : product,isLoading}  = useGetProductById(productId)
+  const { data: product, isLoading } = useGetProductById(productId);
 
-  if (isLoading){
-    return <LoadingSkeletons />
+  if (isLoading) {
+    return <LoadingSkeletons />;
   }
 
   return (
@@ -19,32 +19,29 @@ export function ProductVariantPage({ productId }: { productId: string }) {
       <HeaderDashboard
         title="Variants"
         subTitle="Manage your Product  Variants here">
-       <ButtonCreate props={{
-        id : productId
-       }}/>
+        <ButtonCreate
+          props={{
+            id: productId,
+          }}
+        />
       </HeaderDashboard>
-      {
-        product && (
-          <ProductInfo product={product}/>
-        )
-      }
+      {product && <ProductInfo product={product} />}
     </main>
   );
 }
 
-
-function ButtonCreate({props}  : {props : { id : string}}){
-  const [open,setOpen]  = useState<boolean>(false)
+function ButtonCreate({ props }: { props: { id: string } }) {
+  const [open, setOpen] = useState<boolean>(false);
   return (
     <>
-    <Button onClick={()  => setOpen(true)}>
-      Create Variants
-    </Button>
-      {
-        open && (
-          <BasicInformationStep open={open}  setOpen={() => setOpen(false)} product_id={props.id}/>
-        )
-      }
+      <Button onClick={() => setOpen(true)}>Create Variants</Button>
+      {open && (
+        <BasicInformationStep
+          open={open}
+          setOpen={() => setOpen(false)}
+          product_id={props.id}
+        />
+      )}
     </>
-  )
+  );
 }

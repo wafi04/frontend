@@ -1,6 +1,5 @@
-
 export interface ProductVariantsResponse {
-  variants : VariantsData[]
+  variants: VariantsData[];
 }
 
 export interface VariantsForm {
@@ -19,12 +18,12 @@ export interface VariantsData {
   id: string;
   color: string;
   images: VariantImage[];
-  sku : string
-  product_id : string
-  stock : number
+  sku: string;
+  product_id: string;
+  stock: number;
 }
 
-export  interface VariantsForm {
-  color : string 
-  variantsId  : string  | null
+export interface VariantsForm {
+  color: string;
+  variantsId: string | null;
 }

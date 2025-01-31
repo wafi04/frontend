@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 const image1 = "https://res.cloudinary.com/dstvymie8/image/upload/v1738206143/testing/625868.avif"
 const image2 =
-  "https://img.freepik.com/free-photo/men-playing-rugby-field_23-2150062044.jpg?semt=ais_hybrid";
+  "https://res.cloudinary.com/dstvymie8/image/upload/v1738211825/testing/594704.avif";
 
 export default function Banner() {
   const [currentSlide, setCurrentSlide] = useState<number>(0);

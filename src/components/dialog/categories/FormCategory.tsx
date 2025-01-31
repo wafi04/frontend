@@ -14,8 +14,10 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { FormInput } from "@/components/ui/FormInput";
-import { useCreateCategory, useUpdateCategory } from "@/lib/api/categories/category.query";
-
+import {
+  useCreateCategory,
+  useUpdateCategory,
+} from "@/lib/api/categories/category.";
 
 export type CATEGORY_STEP = "Basic Information" | "Meta Information" | "Image";
 export function FormCategory({
@@ -65,42 +67,41 @@ export function FormCategory({
       reader.readAsDataURL(file);
     }
   };
-const onSubmit = async (data: CategoryForm) => {
-  try {
-    const formData = new FormData();
-    console.log("Form data before append:", {
-      name: data.name,
-      description: data.description,
-      parentId: parentId
-    });
+  const onSubmit = async (data: CategoryForm) => {
+    try {
+      const formData = new FormData();
+      console.log("Form data before append:", {
+        name: data.name,
+        description: data.description,
+        parentId: parentId,
+      });
 
-    formData.append("name", String(data.name).trim());
-    formData.append("description", String(data.description).trim());
-    
-    if (parentId) {
-      formData.append("parent_id", String(parentId).trim());
+      formData.append("name", String(data.name).trim());
+      formData.append("description", String(data.description).trim());
+
+      if (parentId) {
+        formData.append("parent_id", String(parentId).trim());
+      }
+
+      if (imageFile) {
+        formData.append("file", imageFile);
+      }
+
+      Array.from(formData.entries()).forEach(([key, value]) => {
+        console.log(`${key}: ${value}`);
+      });
+
+      if (initialData) {
+        formData.append("id", String(initialData.id));
+        console.log(formData.get("id"));
+        update.mutate(formData);
+      } else {
+        create.mutate(formData);
+      }
+    } catch (error) {
+      console.error("Submission failed:", error);
     }
-
-    if (imageFile) {
-      formData.append("file", imageFile);
-    }
-
-   Array.from(formData.entries()).forEach(([key, value]) => {
-      console.log(`${key}: ${value}`);
-    });
-
-
-    if (initialData) {
-      formData.append("id", String(initialData.id));
-      console.log(formData.get("id"))
-      update.mutate(formData);
-    } else {
-      create.mutate(formData);
-    }
-  } catch (error) {
-    console.error("Submission failed:", error);
-  }
-};
+  };
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="">

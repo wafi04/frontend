@@ -4,8 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChevronDown, ChevronRight, Image as ImageIcon } from "lucide-react";
 import { CategoryData } from "@/types/categories";
 import Image from "next/image";
-import { useGetCategory } from "@/features/api/categories/category.query";
-import { HandleOther } from "@/features/components/dialog/categories/HandleActionsCategory";
+import { HandleOther } from "@/components/dialog/categories/HandleActionsCategory";
+import { useGetCategory } from "@/lib/api/categories/category.";
 
 export function CategoriesDataPage() {
   const { category, error, isLoading } = useGetCategory();

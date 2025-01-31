@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/dialog";
 import { CategoryForm } from "@/types/categories";
 import { FormCategory } from "./FormCategory";
-import { useDeleteCategory } from "@/features/api/categories/category.query";
+import { useDeleteCategory } from "@/lib/api/categories/category.";
 
 export function HandleOther({ initialData }: { initialData: CategoryForm }) {
   const [openUpdate, setOpenUpdate] = useState(false);

@@ -7,7 +7,7 @@ import { FormatPrice } from "@/utils/Format";
 import Image from "next/image";
 import { CartItem } from "@/types/cart";
 import { CartProcessed } from "./CartProcessed";
-import { useCart } from "@/hooks/cart/useCart";
+import { useCart } from "@/hooks/useCart";
 
 export function CartUserPage() {
   const { data } = useGetCart();

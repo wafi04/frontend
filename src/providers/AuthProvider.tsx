@@ -3,7 +3,7 @@
 import { ReactNode, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { useAuthStore } from "@/hooks/auth/userAuthStore";
+import { useAuthStore } from "@/hooks/userAuthStore";
 import { API_RESPONSE } from "@/types/interfaces";
 import { AuthResponse, UserData } from "@/types/user";
 import { api } from "@/lib/api/api";
@@ -18,7 +18,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     queryFn: async () => {
       try {
         const response = await api.get<API_RESPONSE<AuthResponse>>(
-          "/auth/profile"
+          "/user/profile"
         );
         console.log(response.data);
         return response.data;
@@ -30,7 +30,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             router.push("/auth/login"); // Redirect to login page
           }
         }
-        throw error; // Re-throw the error to be handled by React Query
+        throw error;
       }
     },
     staleTime: 5 * 60 * 1000, // 5 minutes

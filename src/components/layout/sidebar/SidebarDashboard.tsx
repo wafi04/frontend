@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { getFilteredMenuItems, menuItems } from "./Sidebar_Data";
 import { MenuItem } from "./Sidebar_Menu";
 import Image from "next/image";
-import { useAuth } from "@/hooks/auth/userAuthStore";
+import { useAuth } from "@/hooks/userAuthStore";
 
 const ANIMATION_DURATION = 0.3;
 const MOBILE_BREAKPOINT = 768;

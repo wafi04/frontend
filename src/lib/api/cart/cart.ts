@@ -1,5 +1,5 @@
 import { BASE_URL } from "@/constants";
-import { useAuth } from "@/hooks/auth/userAuthStore";
+import { useAuth } from "@/hooks/userAuthStore";
 import { CartDto } from "@/types/cart";
 import { Api } from "@/utils/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";

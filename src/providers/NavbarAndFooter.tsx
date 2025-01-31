@@ -5,7 +5,7 @@ import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Navbar } from "@/components/layout/navbar/Navbar";
 import Footer from "@/components/layout/Footer";
-import { useAuth } from "@/hooks/auth/userAuthStore";
+import { useAuth } from "@/hooks/userAuthStore";
 
 export function LayoutsWithHeaderAndFooter({
   children,

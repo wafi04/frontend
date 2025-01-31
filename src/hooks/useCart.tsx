@@ -29,7 +29,7 @@ export const useCart = create<CartState>((set, get) => ({
           ? {
               ...item,
               quantity,
-              subTotal: (item.variant.product.price || 0) * quantity,
+              subTotal: 10 * quantity,
             }
           : item
       );

@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { useSearchHooks } from "@/hooks/search/Search";
+import { useSearchHooks } from "@/hooks/Search";
 import { useGetAllProductsBySearch } from "../api/main";
 import { OpenSearch } from "./OpenSearch";
 

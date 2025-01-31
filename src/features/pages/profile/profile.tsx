@@ -2,7 +2,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import UserAvatar from "@/components/ui/useravatar";
-import { useAuth } from "@/hooks/auth/userAuthStore";
+import { useAuth } from "@/hooks/userAuthStore";
 import { FormatTimestamp } from "@/utils/Format";
 import { Mail, User, Calendar, Lock } from "lucide-react";
 import { useRouter } from "next/navigation";

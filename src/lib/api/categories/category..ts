@@ -13,20 +13,22 @@ export function useCreateCategory() {
   return useMutation({
     mutationKey: ["category"],
     mutationFn: async (formatData: FormData) => {
-      const req = await api.post<API_RESPONSE<CategoryData>>("/category", formatData,{ isMultipart : true});
+      const req = await api.post<API_RESPONSE<CategoryData>>(
+        "/category",
+        formatData,
+        { isMultipart: true }
+      );
       return req.data;
     },
     onSuccess: (serverResponse, newCategory, context) => {
-
       queryClient.invalidateQueries({ queryKey: ["category"] });
 
       toast.success("Create Category Success");
     },
-    onError: () =>
-      {
-        queryClient.cancelQueries({ queryKey: ["category"] });
-        toast.error("Error Creating Category");
-      },
+    onError: () => {
+      queryClient.cancelQueries({ queryKey: ["category"] });
+      toast.error("Error Creating Category");
+    },
   });
 }
 
@@ -35,8 +37,9 @@ export function useGetCategory() {
     queryKey: ["category"],
     queryFn: async () => {
       const res = await api.get<API_RESPONSE<ListCategoriesResponse>>(
-        "/list-categories"
+        "/category/list-categories"
       );
+
       return res.data;
     },
     staleTime: 5 * 60 * 1000,
@@ -57,9 +60,11 @@ export function useUpdateCategory() {
 
   return useMutation({
     mutationKey: ["category"],
-    mutationFn: async (formdata : FormData) => {
-      const id =  formdata.get("id") ?? ""
-      const req = await api.put(`/category/${id}`, formdata,{isMultipart : true});
+    mutationFn: async (formdata: FormData) => {
+      const id = formdata.get("id") ?? "";
+      const req = await api.put(`/category/update/${id}`, formdata, {
+        isMultipart: true,
+      });
       return req.data;
     },
     onMutate: async (updateCategory) => {
@@ -97,7 +102,9 @@ export function useUpdateCategory() {
             return {
               ...oldData,
               data: oldData.data.map((category) =>
-                category.id === updateCategory.get("id") ? serverResponse : category
+                category.id === updateCategory.get("id")
+                  ? serverResponse
+                  : category
               ),
             };
           }

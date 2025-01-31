@@ -2,7 +2,6 @@
 import React, { useRef } from "react";
 import Image from "next/image";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
-import { useGetAllProductWithVariants } from "@/features/api/products/product.query";
 import { Swiper, SwiperSlide, SwiperRef } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -12,9 +11,10 @@ import { FormatPrice } from "@/utils/Format";
 import { Button } from "@/components/ui/button";
 import { ButtonView } from "@/components/ui/button/ButtonView";
 import Link from "next/link";
+import { useGetAllProduct } from "@/lib/api/products/product.query";
 
 const FeaturedCollection = () => {
-  const { data } = useGetAllProductWithVariants();
+  const { data } = useGetAllProduct();
   const swiperRef = useRef<SwiperRef>(null);
 
   const handlePrev = () => {
@@ -77,19 +77,27 @@ const FeaturedCollection = () => {
             },
           }}
           className="container pb-16">
-          {data?.map((product: any) => (
+          {data?.map((product) => (
             <SwiperSlide key={product.id} className="p-10 md:p-0">
               <div className="group relative  overflow-hidden bg-white border border-gray-200 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
                 <div className="relative h-[350px] w-full overflow-hidden rounded-t-xl ">
-                  <Image
-                    src={
-                      product.variants[0]?.image[0]?.url || "/placeholder.jpg"
-                    }
-                    alt={product.name}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 30vw, 20vw"
-                  />
+                  {product?.variants?.[0]?.images?.length ? (
+                    <Image
+                      src={product.variants[0].images[0].url}
+                      alt={product.name || "Product image"}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 30vw, 20vw"
+                    />
+                  ) : (
+                    <Image
+                      src="/banner.jpg"
+                      alt="Default banner"
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 30vw, 20vw"
+                    />
+                  )}
                   <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                     <Link href={`/p/${product.id}`}>
                       <ButtonView />
@@ -101,7 +109,7 @@ const FeaturedCollection = () => {
                 <div className="p-4 space-y-3">
                   <div>
                     <span className="text-xs  tracking-wider text-gray-500">
-                      {product.category.name}
+                      {/* {product.category.name} */}
                     </span>
                     <h3 className="text-lg  text-gray-900 mt-1 line-clamp-2">
                       {product.name}

@@ -1,6 +1,5 @@
 "use client";
 import { useForm } from "react-hook-form";
-import { useRegisterMutation } from "../../lib/api/auth/api";
 import { InitialDataRegister, InitialRegister } from "@/schema/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
@@ -16,6 +15,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/PasswordInput";
+import { useRegisterMutation } from "@/lib/api/auth/api";
 
 export function RegisterPage() {
   const {

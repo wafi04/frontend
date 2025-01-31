@@ -1,12 +1,12 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { LayoutsWithHeaderAndFooter } from "@/providers/NavbarAndFooter";
 import { Loader2, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
 import { FormatPrice } from "@/utils/Format";
-import { useCart } from "@/hooks/cart/useCart";
+import { useCart } from "@/hooks/useCart";
 import { VariantsData } from "@/types/variants";
 import { useGetProductById } from "@/lib/api/products/product.query";
 
@@ -17,13 +17,7 @@ export function ProductDetailsPage({ id }: { id: string }) {
   const [selectedVariant, setSelectedVariant] = useState<
     VariantsData | undefined
   >();
-
-  useEffect(() => {
-    if (data && data.variants.length > 0) {
-      setSelectedVariant(data.variants[0]);
-    }
-  }, [data]);
-
+  console.log(data);
   if (isLoading || data === undefined) {
     return (
       <div className="min-h-screen flex w-full justify-center items-center">
@@ -37,7 +31,7 @@ export function ProductDetailsPage({ id }: { id: string }) {
     setIsOpen(true);
   };
 
-  const mainImage = selectedVariant?.images[0].url;
+  const mainImage = data.variants[0].images[0].url;
 
   return (
     <LayoutsWithHeaderAndFooter className="mt-[80px] ">
@@ -62,7 +56,7 @@ export function ProductDetailsPage({ id }: { id: string }) {
           <div className="space-y-5">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">{data.name}</h1>
-              <p className="mt-2 text-gray-500">{data.description}</p>
+              <p className="mt-2 text-gray-500">{data.sub_title}</p>
             </div>
 
             {/* Variant Images */}
@@ -71,7 +65,7 @@ export function ProductDetailsPage({ id }: { id: string }) {
                 Available Colors
               </h3>
               <div className="grid grid-cols-4 gap-2">
-                {data.variants.map((variant) => (
+                {data.variants?.map((variant) => (
                   <button
                     key={variant.id}
                     onClick={() => setSelectedVariant(variant)}

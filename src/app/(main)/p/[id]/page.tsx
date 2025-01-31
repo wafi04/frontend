@@ -1,4 +1,4 @@
-import { ProductDetailsPage } from "@/pages/productDetails/productDetails";
+import ProductDetailsPage from "@/features/pages/product-details/product-details";
 
 interface IParams {
   params: {

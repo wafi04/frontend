@@ -11,8 +11,8 @@ export function UseCreateProduct() {
   return useMutation({
     mutationKey: ["product"],
     mutationFn: async (create: ProductForm) => {
-      const  req = await api.post("/create-product",create)
-      return req.data
+      const req = await api.post("/create-product", create);
+      return req.data;
     },
     onError: (error: AxiosError) => {
       toast.error(error.message);
@@ -28,8 +28,8 @@ export function useGetAllProduct() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["product"],
     queryFn: async () => {
-        const req =  await api.get<API_RESPONSE<ProductResponse>>("/product")
-        return req.data
+      const req = await api.get<API_RESPONSE<ProductResponse>>("/product");
+      return req.data;
     },
     staleTime: 5 * 10 * 60,
     retry: false,
@@ -37,17 +37,17 @@ export function useGetAllProduct() {
   });
 
   return {
-    data : data?.data.products || [],
+    data: data?.data.products || [],
     isLoading,
     error,
   };
 }
-export function useGetProductById(id  : string) {
+export function useGetProductById(id: string) {
   const { data, isLoading, error } = useQuery({
     queryKey: ["product"],
     queryFn: async () => {
-      const req =  await api.get<API_RESPONSE<ProductData>>(`/product/${id}`)
-      return req.data
+      const req = await api.get<API_RESPONSE<ProductData>>(`/product/${id}`);
+      return req.data;
     },
     staleTime: 1 * 24 * 60 * 60 * 1000,
     gcTime: 2 * 24 * 60 * 60 * 1000,
@@ -56,23 +56,22 @@ export function useGetProductById(id  : string) {
   });
 
   return {
-    data  : data?.data,
+    data: data?.data,
     isLoading,
     error,
   };
 }
-
 
 export function useUpdateProduct() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationKey: ["product"],
-    mutationFn:async (data: ProductForm) => {
-      console.log(data)
-      const req =  await api.put(`/product/${data.id}`,data)
-      return req.data
-    },  
+    mutationFn: async (data: ProductForm) => {
+      console.log(data);
+      const req = await api.put(`/product/${data.id}`, data);
+      return req.data;
+    },
     onMutate: async (updatedProduct) => {
       await queryClient.cancelQueries({ queryKey: ["product"] });
       const previousProducts = queryClient.getQueryData(["product"]);
@@ -129,13 +128,13 @@ export function useUpdateProduct() {
   });
 }
 
-export function useDeleteProduct(id : string) {
+export function useDeleteProduct(id: string) {
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ["product"],
-    mutationFn: async(id : string) => {
-      const req  = await api.delete(`/product/${id}`)
-      return req.data
+    mutationFn: async (id: string) => {
+      const req = await api.delete(`/product/${id}`);
+      return req.data;
     },
     onMutate: async () => {
       await queryClient.cancelQueries({ queryKey: ["product"] });
@@ -176,4 +175,3 @@ export function useDeleteProduct(id : string) {
     },
   });
 }
-

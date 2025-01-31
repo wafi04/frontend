@@ -24,9 +24,11 @@ import {
 } from "@/components/ui/dialog";
 
 import { productSchema } from "@/schema";
-import { useGetCategory } from "@/lib/api/categories/category.query";
-import { UseCreateProduct, useUpdateProduct } from "@/lib/api/products/product.query";
-
+import { useGetCategory } from "@/lib/api/categories/category.";
+import {
+  UseCreateProduct,
+  useUpdateProduct,
+} from "@/lib/api/products/product.query";
 
 export function FormProduct({
   open,
@@ -60,17 +62,16 @@ export function FormProduct({
     defaultValues: {
       categoryId: "",
       description: initialData?.description || "",
-      sub_title  :  initialData?.sub_title || "",
+      sub_title: initialData?.sub_title || "",
       name: initialData?.name || "",
       price: initialData?.price || 0,
     },
   });
 
-
-  console.log(initialData)
+  console.log(initialData);
 
   const flattenedCategories = useMemo(() => {
-    if (!categories)  return []
+    if (!categories) return [];
     const flatten = (cats: CategoryData[], depth = 0): CategoryData[] => {
       return cats.flatMap((cat) => [
         { ...cat, depth },
@@ -81,14 +82,13 @@ export function FormProduct({
   }, [categories]);
 
   const onSubmit = async (data: ProductForm) => {
-    console.log(data.sub_title)
+    console.log(data.sub_title);
     if (initialData) {
-
       update.mutate({
         ...data,
         id: initialData.id,
 
-        sub_title : data.sub_title,
+        sub_title: data.sub_title,
       });
     } else {
       mutate(data);
@@ -119,7 +119,10 @@ export function FormProduct({
               </div>
               <div>
                 <label className="block mb-2">Subtitle</label>
-                <Input {...register("sub_title")} placeholder="Enter subtitle name" />
+                <Input
+                  {...register("sub_title")}
+                  placeholder="Enter subtitle name"
+                />
                 {errors.sub_title && (
                   <p className="text-red-500 text-sm mt-1">
                     {errors.sub_title.message}
@@ -141,7 +144,6 @@ export function FormProduct({
                 )}
               </div>
 
-
               {/* Category Selector */}
               <div>
                 <label className="block mb-2">Category</label>
@@ -158,7 +160,9 @@ export function FormProduct({
                     name="categoryId"
                     control={control}
                     render={({ field }) => (
-                      <Select onValueChange={field.onChange} value={field.value}>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select a category" />
                         </SelectTrigger>

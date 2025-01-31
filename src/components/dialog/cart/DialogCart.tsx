@@ -6,7 +6,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useAddToCart } from "@/features/api/cart/cart";
-import { useCart } from "@/hooks/cart/useCart";
+import { useCart } from "@/hooks/useCart";
 import { ProductDetails } from "@/types/product";
 import { VariantsData } from "@/types/variants";
 import { FormatPrice } from "@/utils/Format";

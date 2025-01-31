@@ -2,9 +2,9 @@ import { useCallback, useEffect, useState } from "react";
 import { TopNavbar } from "./TopNavbar";
 import { BottomNavbar } from "./Bottom_Navbar";
 import { UserData } from "@/types/user";
-import { useAuth } from "@/hooks/auth/userAuthStore";
+import { useAuth } from "@/hooks/userAuthStore";
 import { useHandleLogout } from "@/lib/api/auth/api";
-import { useGetCategory } from "@/lib/api/categories/category.query";
+import { useGetCategory } from "@/lib/api/categories/category.";
 
 export function Navbar() {
   const [isNavVisible, setIsNavVisible] = useState<boolean>(true);
@@ -53,16 +53,13 @@ export function Navbar() {
       <div className="mx-auto">
         {user && <TopNavbar logout={() => logout.mutate()} user={user} />}
 
-      {
-        category && (
+        {category && (
           <BottomNavbar
             categories={category}
             onMobile={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             user={user as UserData}
           />
-
-        )
-      }
+        )}
       </div>
     </header>
   );

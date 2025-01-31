@@ -1,6 +1,6 @@
 import { HandleCreate } from "@/components/dialog/categories/HandleCreate";
 import { HeaderDashboard } from "@/components/layout/header/HeaderDashboard";
-import CategoriesDataPage from "@/features/pages/categories/Categories";
+import CategoriesDataPage from "@/features/pages/categories/category";
 
 export default function DashboardCategory() {
   return (

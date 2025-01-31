@@ -35,7 +35,8 @@ export const useRegisterMutation = () => {
   return useMutation({
     mutationKey: ["register"],
     mutationFn: async (data: InitialDataRegister) => {
-      const res = await api.post("/auth/register");
+      const res = await api.post("/auth/register", data);
+      console.log(res);
       return res.data;
     },
     onError: (err: ErrorResponse) => {
@@ -44,8 +45,7 @@ export const useRegisterMutation = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["user"] });
-      toast("Register Success");
-      push("/login");
+      push("/auth/login");
     },
   });
 };
