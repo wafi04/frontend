@@ -1,8 +1,3 @@
-import {
-  ProductWithCategoryAndVariants,
-  ProductWithVariants,
-  VariantsData,
-} from "@/types/products";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
 
@@ -10,7 +5,7 @@ export function SearchModal({
   product,
   isLoading,
 }: {
-  product: ProductWithCategoryAndVariants;
+  product: any;
   isLoading: boolean;
 }) {
   if (isLoading) {

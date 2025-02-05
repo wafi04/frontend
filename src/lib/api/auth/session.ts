@@ -10,7 +10,7 @@ export function useGetListSessions() {
     queryKey: ["sessions"],
     queryFn: async () => {
       const res = await api.get<API_RESPONSE<SessionsResponse>>(
-        `/auth/list-sessions`
+        `/user/sessions`
       );
       return res.data;
     },

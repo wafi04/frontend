@@ -8,7 +8,7 @@ interface OpenSearchProps {
   search: string;
   isLoading: boolean;
 
-  data: ProductWithCategoryAndVariants[];
+  data: any[];
   handleKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
   toogleSearch: () => void;

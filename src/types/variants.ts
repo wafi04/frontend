@@ -20,7 +20,18 @@ export interface VariantsData {
   images: VariantImage[];
   sku: string;
   product_id: string;
+  inventory: inventory[];
+  price: number;
+}
+
+export interface inventory {
+  variantd_id: string;
+  id: string;
+  size: string;
   stock: number;
+  available_stock: number;
+  created_at: number;
+  updated_at: number;
 }
 
 export interface VariantsForm {

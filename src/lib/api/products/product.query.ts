@@ -11,7 +11,7 @@ export function UseCreateProduct() {
   return useMutation({
     mutationKey: ["product"],
     mutationFn: async (create: ProductForm) => {
-      const req = await api.post("/create-product", create);
+      const req = await api.post("/product", create);
       return req.data;
     },
     onError: (error: AxiosError) => {
@@ -28,7 +28,7 @@ export function useGetAllProduct() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["product"],
     queryFn: async () => {
-      const req = await api.get<API_RESPONSE<ProductResponse>>("/product");
+      const req = await api.get<API_RESPONSE<ProductResponse>>("/product/all");
       return req.data;
     },
     staleTime: 5 * 10 * 60,

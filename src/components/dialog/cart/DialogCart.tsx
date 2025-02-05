@@ -5,8 +5,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useAddToCart } from "@/features/api/cart/cart";
 import { useCart } from "@/hooks/useCart";
+import { useAddToCart } from "@/lib/api/cart/cart";
 import { ProductDetails } from "@/types/product";
 import { VariantsData } from "@/types/variants";
 import { FormatPrice } from "@/utils/Format";
@@ -25,7 +25,7 @@ export function ModalAddToCart({
   product,
   selectedVariant,
 }: ModalAddToCartProps) {
-  const { count, increase, decrease, total, size } = useCart();
+  const { count, increase, decrease, total, size, price } = useCart();
 
   const addToCart = useAddToCart();
 
@@ -33,8 +33,9 @@ export function ModalAddToCart({
     addToCart.mutate({
       quantity: count,
       size,
-      subTotal: total,
-      variantId: selectedVariant?.id as string,
+      total,
+      price,
+      variant_id: selectedVariant?.id as string,
     });
     setIsOpen(false);
   };
@@ -49,7 +50,7 @@ export function ModalAddToCart({
           <div className="flex items-center space-x-4">
             <div className="h-20 w-20 relative">
               <Image
-                src={selectedVariant?.image[0].url as string}
+                src={selectedVariant?.images[0].url as string}
                 alt={product.name}
                 fill
                 className="object-cover rounded-lg"
@@ -94,7 +95,7 @@ export function ModalAddToCart({
               className="flex-1"
               onClick={onSubmit}
               disabled={addToCart.isPending}>
-              {addToCart.isPending ? "Processing" : " Checkout"}
+              {addToCart.isPending ? "Processing" : "Add To Cart"}
             </Button>
           </div>
         </div>

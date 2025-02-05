@@ -4,15 +4,14 @@ import { VariantsData } from "./variants";
 export interface ProductForm {
   id?: string;
   name: string;
-  sub_title : string;
+  sub_title: string;
   categoryId: string;
   description: string;
   price: number;
 }
 
-
 export interface ProductResponse {
-    products : ProductData[]
+  products: ProductData[];
 }
 
 export interface ProductData {
@@ -25,7 +24,7 @@ export interface ProductData {
   price: number;
   sku: string;
   updatedAt: string | null;
-  variants : VariantsData[]
+  variants: VariantsData[];
 }
 
 export interface ProductDetails extends ProductData {

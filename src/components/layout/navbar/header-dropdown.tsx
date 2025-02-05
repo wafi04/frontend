@@ -8,12 +8,24 @@ interface HeaderDropdownProps {
 }
 const HeaderDropdown = ({ children, categories }: HeaderDropdownProps) => {
   const [isHovered, setIsHovered] = useState(false);
+  let timeoutId: NodeJS.Timeout;
+
+  const handleMouseEnter = () => {
+    clearTimeout(timeoutId);
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    timeoutId = setTimeout(() => {
+      setIsHovered(false);
+    }, 300);
+  };
 
   return (
     <div
-      className=" flex items-center "
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}>
+      className="flex items-center"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}>
       {children}
       {isHovered && (
         <motion.div

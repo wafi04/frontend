@@ -8,6 +8,21 @@ export interface SessionsResponse {
   sessions: SessionData[];
 }
 
+export type UserProfile = {
+  user_id: string;
+  place_birth: string;
+  date_birth: string;
+  gender: "male" | "female" | "other";
+  phone_number: string;
+  bio: string;
+  preferences: {
+    theme: "light" | "dark";
+    notifications: boolean;
+  };
+  created_at: string;
+  updated_at: string;
+};
+
 export interface SessionData {
   created_at: number;
   device_info: string;
@@ -26,4 +41,24 @@ export interface UserData {
   role: "user" | "admin";
   updated_at: number;
   user_id: string;
+}
+
+export interface ShippingResponse {
+  address: ShoppingAddrData[];
+}
+
+export interface ShoppingAddrData {
+  user_id: string;
+  address_id: string;
+  recipient_name: string;
+  recipient_phone: string;
+  full_address: string;
+  city: string;
+  province: string;
+  postal_code: string;
+  country: string;
+  label?: string;
+  is_default: boolean;
+  created_at: string;
+  updated_at: string;
 }

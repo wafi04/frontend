@@ -1,4 +1,4 @@
-import { BASE_URL } from "@/constants";
+import { BACKEND_URL } from "@/constants";
 import { QuerySearch, SearchResponse } from "@/types/search";
 export class ProductSearch {
   async getBySearch(params: QuerySearch): Promise<SearchResponse> {
@@ -20,7 +20,7 @@ export class ProductSearch {
       if (params.size) queryParams.append("size", params.size);
 
       // Membuat URL lengkap dengan query parameters
-      const url = `${BASE_URL}/products/search?${queryParams.toString()}`;
+      const url = `${BACKEND_URL}/products/search?${queryParams.toString()}`;
 
       const response = await fetch(url, {
         method: "GET",

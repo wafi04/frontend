@@ -25,7 +25,7 @@ export const useCart = create<CartState>((set, get) => ({
   updateItemQuantity: (id: string, quantity: number) =>
     set((state) => {
       const updatedItems = state.items.map((item) =>
-        item.id === id
+        item.cart_item_id === id
           ? {
               ...item,
               quantity,
@@ -35,7 +35,7 @@ export const useCart = create<CartState>((set, get) => ({
       );
 
       const newTotal = updatedItems.reduce(
-        (sum, item) => sum + item.subTotal,
+        (sum, item) => sum + item.sub_total,
         0
       );
 

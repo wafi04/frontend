@@ -12,6 +12,27 @@ export function FormatPrice(price: number) {
   }).format(price);
 }
 
+export const formatDateForInput = (
+  isoString: string | null | undefined
+): string => {
+  if (!isoString) return "";
+  try {
+    return new Date(isoString).toISOString().split("T")[0];
+  } catch (error) {
+    console.error("Error formatting date:", error);
+    return "";
+  }
+};
+
+export const formatDateForServer = (dateString: string): string => {
+  try {
+    return new Date(dateString).toISOString();
+  } catch (error) {
+    console.error("Error formatting date for server:", error);
+    return dateString;
+  }
+};
+
 export const FormatTimestamp = (timestamp: number) => {
   const date = new Date(timestamp * 1000);
   return date.toLocaleDateString("id-ID", {
@@ -81,14 +102,10 @@ export function DeviceInfo({
   item,
   className,
 }: {
-  item: string; 
+  item: string;
   className?: string;
 }) {
   const deviceType = identifyDeviceType({ userAgent: item });
 
-  return (
-      <div className="flex-shrink-0">{deviceType.icon}</div>
-    
-  );
+  return <div className="flex-shrink-0">{deviceType.icon}</div>;
 }
-

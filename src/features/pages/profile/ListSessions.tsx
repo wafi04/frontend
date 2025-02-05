@@ -1,7 +1,11 @@
 "use client";
 import { useGetListSessions, useRevokeSessions } from "@/lib/api/auth/session";
 import { LoadingSkeletons } from "@/components/ui/skeleton/CardProductSkeleton";
-import { DeviceInfo, FormatTimestamp, identifyDeviceType } from "@/utils/Format";
+import {
+  DeviceInfo,
+  FormatTimestamp,
+  identifyDeviceType,
+} from "@/utils/Format";
 import { Button } from "@/components/ui/button";
 import { MoreVertical, AlertTriangle } from "lucide-react";
 import {
@@ -27,7 +31,7 @@ export function ListSessions() {
   }
 
   return (
-    <section className="max-w-4xl mx-auto p-6">
+    <section className="max-w-4xl mx-auto ">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-medium text-gray-800">Active Sessions</h2>
         <Button variant="ghost" size="icon">
@@ -41,23 +45,23 @@ export function ListSessions() {
             key={item.session_id}
             className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition-colors group">
             <div className="flex items-center space-x-4">
-             <DeviceInfo
-              item={item.device_info}
-              className="flex items-center justify-center w-20"
-            />
-            <div>
-              <div className="flex items-center space-x-2">
-                <span className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded">
-                  {item.ip_address}
-                </span>
+              <DeviceInfo
+                item={item.device_info}
+                className="flex items-center justify-center w-20"
+              />
+              <div>
+                <div className="flex items-center space-x-2">
+                  <span className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded">
+                    {item.ip_address}
+                  </span>
+                </div>
+                <p className="text-xs text-gray-500 truncate max-w-xs">
+                  {identifyDeviceType({ userAgent: item.device_info }).name} -{" "}
+                  {item.device_info.length > 10
+                    ? `${item.device_info.slice(0, 10)}...`
+                    : item.device_info}
+                </p>
               </div>
-            <p className="text-xs text-gray-500 truncate max-w-xs">
-              {identifyDeviceType({ userAgent: item.device_info }).name} -{" "}
-              {item.device_info.length > 10
-                ? `${item.device_info.slice(0, 10)}...`
-                : item.device_info}
-            </p>
-            </div>
             </div>
             <div className="flex items-center space-x-4">
               <div className="text-right">
