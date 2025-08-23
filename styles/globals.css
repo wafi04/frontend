@@ -2,26 +2,191 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+.font-sans {
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    -webkit-text-size-adjust: 100%;
+    tab-size: 4;
+    font-variation-settings: normal;
+    -webkit-tap-highlight-color: transparent;
+    font-feature-settings: "cv02","cv03","cv04","cv11";
+    
+    /* Color palette for blue theme */
+    --color-1: 240 100% 63%;
+    --color-2: 220 100% 63%;
+    --color-3: 200 100% 63%;
+    --color-4: 180 100% 63%;
+    --color-5: 160 100% 63%;
+    
+    --swiper-theme-color: #3b82f6;
+    --swiper-navigation-size: 44px;
+    --flashsale-image: url('https://client-cdn.bangjeff.com/veinstore.id/meta/background.webp');
+    
+    /* Blue theme backgrounds */
+    --recommendation-background: 220 91% 25%;
+    --popular-background: 220 30% 18%;
+    --popular-image: url('https://client-cdn.bangjeff.com/veinstore.id/meta/background.webp');
+    --product-background: 220 30% 18%;
+    --order-header: 220 30% 18%;
+    --order-variant: 220 30% 18%;
+    --order-variant-foreground: 0 0% 100%;
+    --order-variant-image: url(https://client-cdn.bangjeff.com/veinstore.id/meta/background.webp);
+    --payment-card-background: 220 30% 18%;
+    --auth-image: url(https://client-cdn.bangjeff.com/veinstore.id/meta/20250109_182520.webp);
+    
+    --radius: 1rem;
+    
+    /* Blue gradient for buttons */
+    --button-gradient-active: true;
+    --button-gradient-dir: to bottom;
+    --button-gradient-from: #60a5fa;
+    --gradien-from-stop: 0%;
+    --button-gradient-via: #3b82f6;
+    --button-gradient-via-stop: 50%;
+    --button-gradient-to: #1d4ed8;
+    --button-gradient-to-stop: 100%;
+    --button-gradient-theme: linear-gradient(to bottom, #60a5fa 0%, #3b82f6 50%, #1d4ed8 100%);
+    
+    /* Dark Blue Theme Colors */
+    --background: 220 26% 6%;           /* Very dark blue background */
+    --foreground: 213 31% 91%;          /* Light blue-white text */
+    --card: 220 23% 9%;                 /* Dark blue card */
+    --card-foreground: 213 31% 91%;     /* Light text on cards */
+    --popover: 220 26% 8%;              /* Popover background */
+    --popover-foreground: 213 31% 91%;  /* Popover text */
+    --primary: 217 91% 60%;             /* Bright blue primary */
+    --primary-foreground: 220 26% 6%;   /* Dark text on primary */
+    --secondary: 220 20% 14%;           /* Secondary blue */
+    --secondary-foreground: 213 31% 91%;/* Light text on secondary */
+    --muted: 220 17% 20%;               /* Muted blue */
+    --muted-foreground: 213 15% 70%;    /* Muted text */
+    --accent: 217 32% 17%;              /* Accent blue */
+    --accent-foreground: 213 31% 91%;   /* Light text on accent */
+    --success: 142 70% 45%;             /* Keep green for success */
+    --success-foreground: 213 31% 91%;  /* Light text */
+    --warning: 38 92% 50%;              /* Amber warning */
+    --warning-foreground: 220 26% 6%;   /* Dark text on warning */
+    --info: 217 91% 60%;                /* Blue info (same as primary) */
+    --info-foreground: 220 26% 6%;      /* Dark text on info */
+    --destructive: 0 84% 50%;           /* Red destructive */
+    --destructive-foreground: 213 31% 91%; /* Light text */
+    --border: 220 20% 18%;              /* Blue border */
+    --input: 220 20% 16%;               /* Input background */
+    --ring: 217 91% 60%;                /* Focus ring */
+    
+    color-scheme: dark;
+    line-height: inherit;
+    color: hsl(var(--foreground));
+    font-family: var(--font-sans),ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    -webkit-font-smoothing: antialiased;
+    --font-sans: "__IBM_Plex_Sans_Condensed_368570","__IBM_Plex_Sans_Condensed_Fallback_368570";
+    --font-bjcredits: "__Lexend_Deca_7fd41d","__Lexend_Deca_Fallback_7fd41d";
+    --font-chakra: "__Chakra_Petch_bde904","__Chakra_Petch_Fallback_bde904";
+    box-sizing: border-box;
+    border: 0 solid #e5e7eb;
+    border-color: hsl(var(--border));
+    --tw-scroll-snap-strictness: proximity;
+    --tw-ring-offset-width: 0px;
+    --tw-ring-offset-color: #fff;
+    --tw-ring-color: rgba(59,130,246,.5);
+    --tw-ring-offset-shadow: 0 0 #0000;
+    --tw-ring-shadow: 0 0 #0000;
+    --tw-shadow: 0 0 #0000;
+    --tw-shadow-colored: 0 0 #0000;
+    
+    /* Sidebar blue theme */
+    --sidebar-background: 220 26% 8%;
+    --sidebar-foreground: 213 31% 91%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 220 26% 6%;
+    --sidebar-accent: 220 20% 14%;
+    --sidebar-accent-foreground: 213 31% 91%;
+    --sidebar-border: 220 20% 18%;
+    --sidebar-ring: 217 91% 60%;
+  }
+  
+  .dark {
+    /* Enhanced dark blue theme */
+    --background: 220 28% 4%;           /* Even darker blue */
+    --foreground: 213 31% 93%;          /* Brighter text */
+    --card: 220 25% 7%;                 /* Darker blue card */
+    --card-foreground: 213 31% 93%;     
+    --popover: 220 28% 6%;              
+    --popover-foreground: 213 31% 93%;  
+    --primary: 217 91% 65%;             /* Slightly brighter primary */
+    --primary-foreground: 220 28% 4%;   
+    --secondary: 220 22% 12%;           
+    --secondary-foreground: 213 31% 93%;
+    --muted: 220 19% 16%;               
+    --muted-foreground: 213 15% 75%;    
+    --accent: 217 35% 15%;              
+    --accent-foreground: 213 31% 93%;   
+    --destructive: 0 84% 55%;           
+    --destructive-foreground: 213 31% 93%;
+    --border: 220 22% 15%;              
+    --input: 220 22% 14%;               
+    --ring: 217 91% 65%;                
+    
+    /* Chart colors with blue theme */
+    --chart-1: 217 91% 60%;  /* Blue */
+    --chart-2: 200 91% 60%;  /* Cyan */
+    --chart-3: 240 91% 60%;  /* Purple-blue */
+    --chart-4: 180 91% 60%;  /* Teal */
+    --chart-5: 260 91% 60%;  /* Purple */
+    
+    /* Sidebar enhanced */
+    --sidebar-background: 220 28% 6%;
+    --sidebar-foreground: 213 31% 93%;
+    --sidebar-primary: 217 91% 65%;
+    --sidebar-primary-foreground: 220 28% 4%;
+    --sidebar-accent: 220 22% 12%;
+    --sidebar-accent-foreground: 213 31% 93%;
+    --sidebar-border: 220 22% 15%;
+    --sidebar-ring: 217 91% 65%;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@layer base {
+  * {
+    
+    @apply border-border;
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type='number'] {
+      -moz-appearance: textfield;
+    }
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+.container {
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 1rem;
+    padding-left: 1rem;
+}
+
+@layer utilities {
+  .bg-blue-gradient {
+    background: linear-gradient(to bottom, #60a5fa 0%, #3b82f6 50%, #1d4ed8 100%);
+  }
+  
+  .border-blue-glow {
+    border-color: hsl(var(--primary));
+    box-shadow: 0 0 0 1px hsl(var(--primary) / 0.2);
+  }
+  
+  .text-blue-glow {
+    color: hsl(var(--primary));
+    text-shadow: 0 0 10px hsl(var(--primary) / 0.3);
+  }
 }
