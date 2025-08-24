@@ -34,13 +34,6 @@ export const menuItems: MenuItem[] = [
     href: "/",
     badge: null,
   },
-  // {
-  //     id: 'analytics',
-  //     label: 'Analytics',
-  //     icon: BarChart3,
-  //     href: '/analytics',
-  //     badge: 'New'
-  // },
   {
     id: "users",
     label: "Users",
@@ -59,9 +52,9 @@ export const menuItems: MenuItem[] = [
     icon: FileText,
     href: "/dashboard/product",
     subItems: [
-      { label: "Categories", href: "/dashboard/category" },
-      { label: "Products", href: "/dashboard/all" },
-      { label: "Sub Category", href: "/dashboard/subcategories" },
+      { label: "Kategori", href: "/dashboard/category" },
+      { label: "Produk", href: "/dashboard/all" },
+      { label: "Sub Kategori", href: "/dashboard/subcategory" },
     ],
   },
   {
@@ -73,15 +66,9 @@ export const menuItems: MenuItem[] = [
   },
   {
     id: "method",
-    label: "Method",
+    label: "Metode Pembayaran",
     icon: Wallet,
-    href: "/dashboard/methods",
-  },
-  {
-    id: "calendar",
-    label: "Calendar",
-    icon: Calendar,
-    href: "/calendar",
+    href: "/dashboard/method",
   },
   {
     id: "settings",

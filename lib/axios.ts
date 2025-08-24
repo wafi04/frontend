@@ -15,7 +15,7 @@ export class Api {
   private instance: AxiosInstance;
   constructor() {
     this.instance = axios.create({
-      baseURL: "http://localhost:9000/api/v1",
+      baseURL: "http://localhost:8000/api/v1",
       withCredentials: true,
     });
 

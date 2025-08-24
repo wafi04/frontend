@@ -1,15 +1,4 @@
-"use client";
-
-import { CategoryOmit } from "@/types/category";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { HeaderDashboard } from "@/features/dashboard/components/headerDashboard";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -19,16 +8,21 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { typeCategory } from "../data/typeCategory";
-import { Button } from "@/components/ui/button";
-import { Check, Trash2, Save } from "lucide-react";
-import { useUpdateCategory } from "../hooks/useUpdateCategoryData";
+import {
+  TableBody,
+  Table,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { HeaderDashboard } from "@/features/dashboard/components/headerDashboard";
+import { PaymentMethod } from "@/types/method";
+import { Check, Save, Trash2 } from "lucide-react";
+import { paymentMethodTypes } from "../hooks/typeMethod";
+import { useUpdateMethod } from "../hooks/useUpdateMethod";
 
-interface TableCategoryProps {
-  data: CategoryOmit[];
-}
-
-export const TableCategory = ({ data }: TableCategoryProps) => {
+export function TableMethod({ data }: { data: PaymentMethod[] }) {
   const {
     editingData,
     hasUnsaved,
@@ -38,7 +32,7 @@ export const TableCategory = ({ data }: TableCategoryProps) => {
     unsavedChanges,
     isSaving,
     isDeleting,
-  } = useUpdateCategory({
+  } = useUpdateMethod({
     data,
     onUpdateSuccess: () => {},
     onDeleteSuccess: () => {},
@@ -56,13 +50,19 @@ export const TableCategory = ({ data }: TableCategoryProps) => {
             <TableRow>
               <TableHead className="w-[60px] border-r">ID</TableHead>
               <TableHead className="border-r">Name</TableHead>
-              <TableHead className="border-r">Description</TableHead>
+              <TableHead className="border-r ">Description</TableHead>
               <TableHead className="border-r">Type</TableHead>
               <TableHead className="text-center border-r w-[120px]">
-                Sort Order
+                Kode
               </TableHead>
               <TableHead className="text-center border-r w-[100px]">
                 Status
+              </TableHead>
+              <TableHead className="text-center border-r w-[100px]">
+                Min
+              </TableHead>
+              <TableHead className="text-center border-r w-[100px]">
+                Max
               </TableHead>
               <TableHead className="w-[100px]">Actions</TableHead>
             </TableRow>
@@ -124,7 +124,7 @@ export const TableCategory = ({ data }: TableCategoryProps) => {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        {typeCategory().map((option) => (
+                        {paymentMethodTypes().map((option) => (
                           <SelectItem key={option.value} value={option.value}>
                             {option.name}
                           </SelectItem>
@@ -135,15 +135,11 @@ export const TableCategory = ({ data }: TableCategoryProps) => {
 
                   <TableCell className="border-r">
                     <Input
-                      type="number"
+                      type="text"
                       className="border-0 shadow-none focus-visible:ring-0 p-1 h-8 text-center w-20 mx-auto"
-                      value={category.sort_order}
+                      value={category.code}
                       onChange={(e) =>
-                        handleFieldChange(
-                          category.id,
-                          "sort_order",
-                          parseInt(e.target.value) || 0
-                        )
+                        handleFieldChange(category.id, "code", e.target.value)
                       }
                       min="0"
                     />
@@ -151,15 +147,51 @@ export const TableCategory = ({ data }: TableCategoryProps) => {
 
                   <TableCell className="text-center border-r">
                     <Switch
-                      checked={category.is_active}
-                      onCheckedChange={(checked) =>
-                        handleFieldChange(category.id, "is_active", checked)
+                      checked={category.status === "active"} // string -> boolean
+                      onCheckedChange={
+                        (checked) =>
+                          handleFieldChange(
+                            category.id,
+                            "status",
+                            checked ? "active" : "inactive"
+                          ) // boolean -> string
                       }
                       className="scale-75 transform translate-y-1"
                     />
                   </TableCell>
 
-                  <TableCell className="flex items-center gap-1.5 pl-2">
+                  <TableCell className="border-r">
+                    <Input
+                      type="number"
+                      className="border-0 shadow-none focus-visible:ring-0 p-1 h-8 text-center w-20 mx-auto"
+                      value={category.minAmount}
+                      onChange={(e) =>
+                        handleFieldChange(
+                          category.id,
+                          "minAmount",
+                          parseInt(e.target.value) || 0
+                        )
+                      }
+                      min="0"
+                    />
+                  </TableCell>
+                  <TableCell className="border-r">
+                    <Input
+                      type="number"
+                      className="border-0 shadow-none focus-visible:ring-0 p-1 h-8 text-center w-20 mx-auto"
+                      value={category.maxAmount}
+                      onChange={(e) =>
+                        handleFieldChange(
+                          category.id,
+                          "maxAmount",
+                          parseInt(e.target.value) || 0
+                        )
+                      }
+                      min="0"
+                    />
+                  </TableCell>
+
+                  <TableCell className="flex items-center gap-1.5 ">
                     <div className="relative">
                       <Button
                         variant="ghost"
@@ -168,7 +200,7 @@ export const TableCategory = ({ data }: TableCategoryProps) => {
                         onClick={() => handleSave(category.id)}
                         disabled={!unsavedChanges.has(category.id)}
                       >
-                        <Save className="h-3.5 w-3.5" />
+                        <Check className="h-3.5 w-3.5" />
                       </Button>
                       {unsavedChanges.has(category.id) && (
                         <span className="absolute -top-1 -right-1 h-2.5 w-2.5 bg-red-500 rounded-full ring-1 ring-white"></span>
@@ -192,4 +224,4 @@ export const TableCategory = ({ data }: TableCategoryProps) => {
       </div>
     </div>
   );
-};
+}
