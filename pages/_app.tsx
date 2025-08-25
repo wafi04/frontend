@@ -22,7 +22,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <ReactQueryProvider>
-      <Component {...pageProps} />;
+      <Component {...pageProps} />
     </ReactQueryProvider>
   );
 }

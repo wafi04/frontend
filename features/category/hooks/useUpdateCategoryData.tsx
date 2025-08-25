@@ -36,6 +36,7 @@ export function useUpdateCategory({
         original.description !== item.description ||
         original.type !== item.type ||
         original.sort_order !== item.sort_order ||
+        original.icon !== item.icon ||
         original.is_active !== item.is_active;
 
       if (isModified) {
@@ -66,6 +67,7 @@ export function useUpdateCategory({
             name: payload.name,
             description: payload.description,
             type: payload.type,
+            icon : payload.icon,
             sort_order: payload.sort_order,
             is_active: payload.is_active,
           },

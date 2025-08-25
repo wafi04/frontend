@@ -15,7 +15,7 @@ export class Api {
   private instance: AxiosInstance;
   constructor() {
     this.instance = axios.create({
-      baseURL: "http://localhost:8000/api/v1",
+      baseURL: "http://localhost:9000/api/v1",
       withCredentials: true,
     });
 
@@ -24,15 +24,15 @@ export class Api {
       async (error: AxiosError) => {
         const originalRequest = error.config as any;
 
-        if (error.response?.status === 401 && !originalRequest._retry) {
-          originalRequest._retry = true;
+        // if (error.response?.status === 401 && !originalRequest._retry) {
+        //   originalRequest._retry = true;
 
-          if (typeof window !== "undefined") {
-            window.location.href = "/auth/login";
-          }
+        //   if (typeof window !== "undefined") {
+        //     window.location.href = "/auth/login";
+        //   }
 
-          return Promise.reject();
-        }
+        //   return Promise.reject();
+        // }
       }
     );
   }

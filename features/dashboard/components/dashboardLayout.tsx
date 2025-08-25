@@ -11,5 +11,5 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       <AppSidebar className="border-r" />
       <SidebarInset className="">{children}</SidebarInset>
     </SidebarProvider>
-  );
+  )
 }

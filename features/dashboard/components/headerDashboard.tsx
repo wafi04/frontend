@@ -14,7 +14,6 @@ import { Separator } from "@radix-ui/react-separator";
 
 export function HeaderDashboard({
   title = "Dashboard",
-  description = "Welcome to your admin dashboard.",
   children,
 }: {
   title?: string;
@@ -35,7 +34,6 @@ export function HeaderDashboard({
         <div className="flex items-center justify-between ">
           <div>
             <h1 className="text-3xl font-bold tracking-tight">{title}</h1>
-            <p className="text-muted-foreground">{description}</p>
           </div>
           {children}
         </div>

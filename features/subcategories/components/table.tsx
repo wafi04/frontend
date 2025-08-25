@@ -116,10 +116,7 @@ export function TableSubCategories({ data }: TableSubCategoriesProps) {
                       src={item.thumbnail}
                       alt={item.name}
                       className="h-10 w-10 object-cover rounded-md border"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src =
-                          "/images/placeholder.png";
-                      }}
+                      
                     />
                   </div>
                 </TableCell>
@@ -131,10 +128,7 @@ export function TableSubCategories({ data }: TableSubCategoriesProps) {
                       src={item.bannerUrl}
                       alt="Banner"
                       className="h-8 w-20 object-cover rounded border"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src =
-                          "/images/placeholder-banner.png";
-                      }}
+                     
                     />
                   </div>
                 </TableCell>
@@ -159,14 +153,12 @@ export function TableSubCategories({ data }: TableSubCategoriesProps) {
                   className="border-r max-w-xs truncate text-sm"
                   title={item.instruction}
                 >
-                  <Input
-                    className="border-0 shadow-none focus-visible:ring-0 p-1 h-8"
-                    value={item.instruction}
-                    onChange={(e) =>
-                      handleFieldChange(item.id, "instruction", e.target.value)
-                    }
-                    placeholder="Sub Category instruction"
-                  />
+                   <img
+                      src={item.instruction}
+                      alt="Banner"
+                      className="h-8 w-20 object-cover rounded border"
+                     
+                    />
                 </TableCell>
 
                 {/* Is Active */}

@@ -21,8 +21,9 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { typeCategory } from "../data/typeCategory";
 import { Button } from "@/components/ui/button";
-import { Check, Trash2, Save } from "lucide-react";
+import {  Trash2, Save, Phone, Wifi, Lightbulb, Wallet, Star, Ticket ,Gamepad, PhoneIcon} from "lucide-react";
 import { useUpdateCategory } from "../hooks/useUpdateCategoryData";
+import Image from "next/image";
 
 interface TableCategoryProps {
   data: CategoryOmit[];
@@ -43,11 +44,11 @@ export const TableCategory = ({ data }: TableCategoryProps) => {
     onUpdateSuccess: () => {},
     onDeleteSuccess: () => {},
   });
+
   return (
     <div className="py-4 px-6">
       <HeaderDashboard
-        title="Manage Categories"
-        description="Manage Category Information"
+        title="Manajemen Kategoris"
       />
 
       <div className="border mt-4 rounded-md overflow-hidden">
@@ -56,6 +57,7 @@ export const TableCategory = ({ data }: TableCategoryProps) => {
             <TableRow>
               <TableHead className="w-[60px] border-r">ID</TableHead>
               <TableHead className="border-r">Name</TableHead>
+              <TableHead className="border-r">Icon</TableHead>
               <TableHead className="border-r">Description</TableHead>
               <TableHead className="border-r">Type</TableHead>
               <TableHead className="text-center border-r w-[120px]">
@@ -96,6 +98,12 @@ export const TableCategory = ({ data }: TableCategoryProps) => {
                       }
                       placeholder="Category name"
                     />
+                  </TableCell>
+
+                  <TableCell className="border-r">
+                  <TableCell className="flex items-center justify-center">
+                    {category.icon}
+                </TableCell>
                   </TableCell>
 
                   <TableCell className="border-r">
