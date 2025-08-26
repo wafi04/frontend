@@ -5,7 +5,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useGetAllSubCategory() {
   const { data, isLoading, error } = useQuery({
-    queryKey: ["all-subcategory"],
+    queryKey: ["subcategories"],
     queryFn: async () => {
       const data = await api.get<ApiPagination<SubCategory[]>>("/subcategory");
       return data.data;
@@ -35,7 +35,26 @@ export function useGetSubCategoryById(id: number) {
   });
 
   return {
-    data: data?.data,
+    data: data?.data ,
+    isLoading,
+    error,
+  };
+}
+
+export function useGetSubCategoryByCategories(id: number) {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["subcategories", "category", id],
+    queryFn: async () => {
+      const data = await api.get<{ data: SubCategory[] }>(`/subcategory/type/${id}`);
+      return data.data;
+    },
+    staleTime: 60000,
+    gcTime: 60000,
+    enabled: !!id,
+  });
+
+  return {
+    data: data?.data ?? [],
     isLoading,
     error,
   };
@@ -51,8 +70,13 @@ export function useUpdateSubCategoryMutation() {
       id: number;
       payload: Partial<SubCategory>;
     }) => api.put<API_RESPONSE<SubCategory>>(`/subcategory/${id}`, payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["all-subcategory"] });
+    onSuccess: (data, variables) => {
+      // Invalidate and refetch all related queries
+      queryClient.invalidateQueries({ queryKey: ["subcategories"] });
+      queryClient.invalidateQueries({ queryKey: ["subcategory", variables.id] });
+      
+      // If you have category information, also invalidate category-specific queries
+      // queryClient.invalidateQueries({ queryKey: ["subcategories", "category"] });
     },
   });
 }
@@ -62,8 +86,11 @@ export function useDeleteSubCategoryMutation() {
   return useMutation({
     mutationFn: (id: number) =>
       api.delete<API_RESPONSE<SubCategory>>(`/subcategory/${id}`),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["all-subcategory"] });
+    onSuccess: (data, variables) => {
+      // Invalidate and refetch all related queries
+      queryClient.invalidateQueries({ queryKey: ["subcategories"] });
+      queryClient.invalidateQueries({ queryKey: ["subcategory", variables] });
+      queryClient.invalidateQueries({ queryKey: ["subcategories", "category"] });
     },
   });
 }

@@ -53,7 +53,7 @@ export const menuItems: MenuItem[] = [
     href: "/dashboard/product",
     subItems: [
       { label: "Kategori", href: "/dashboard/category" },
-      { label: "Produk", href: "/dashboard/all" },
+      { label: "Produk", href: "/dashboard/product" },
       { label: "Sub Kategori", href: "/dashboard/subcategory" },
     ],
   },

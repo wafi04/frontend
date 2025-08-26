@@ -10,7 +10,6 @@ export function Navbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
-  // Define your navigation items with appropriate Lucide icons
   const navItems = [
     { label: "TopUp", href: "/", icon: ShoppingBag },
     { label: "Cek Transaksi", href: "/cek-transaksi", icon: ReceiptText },
@@ -63,7 +62,7 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-40 w-full bg-secondary/80 backdrop-blur-md duration-500 ease-in-out print:hidden">
-      <div className="border-b border-border/20">
+      <div className="border-b">
         <div className="container flex h-16 items-center justify-between gap-4">
           {/* Logo */}
           <motion.div
@@ -112,25 +111,7 @@ export function Navbar() {
             >
               <Search className="size-5" />
             </motion.button>
-
-            {/* Country selector */}
-            <motion.div className="flex items-center justify-center" whileHover={{ scale: 1.02 }}>
-              <button
-                type="button"
-                className="inline-flex items-center h-9 px-4 py-2 pl-2 pr-3 rounded-lg border border-border/50 bg-transparent text-sm font-medium hover:bg-accent/75 hover:text-accent-foreground transition-all duration-200"
-              >
-                <div className="size-5">
-                  <Image
-                    title="id"
-                    alt="ID Flag"
-                    width={20}
-                    height={20}
-                    src="https://react-circle-flags.pages.dev/id.svg"
-                  />
-                </div>
-                <span className="ml-2">ID / IDR</span>
-              </button>
-            </motion.div>
+           
 
             {/* Mobile menu button */}
             <div className="block md:hidden">
@@ -157,7 +138,7 @@ export function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden border-b border-border/20 bg-secondary/95 backdrop-blur-md"
+            className="md:hidden border bg-secondary/95 backdrop-blur-md"
           >
             <div className="container py-3">
               <div className="relative">
@@ -182,7 +163,7 @@ export function Navbar() {
       </AnimatePresence>
 
       {/* Desktop Navigation */}
-      <nav className="container hidden h-12 w-full items-center justify-between border-b border-border/20 md:flex">
+      <nav className="container hidden h-12 w-full items-center justify-between border-b s md:flex">
         <motion.div
           className="flex h-full items-center gap-6"
           initial="hidden"
@@ -191,7 +172,7 @@ export function Navbar() {
         >
           {navItems.map((item, index) => {
             const IconComponent = item.icon
-            const isActive = item.label === "TopUp" // You can make this dynamic based on current route
+            const isActive = item.label === "TopUp" 
 
             return (
               <motion.div key={item.label} variants={itemVariants}>

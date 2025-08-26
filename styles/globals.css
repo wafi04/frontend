@@ -2,9 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-.font-sans {
-    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-}
+
 
 @layer base {
   :root {
@@ -14,22 +12,20 @@
     -webkit-tap-highlight-color: transparent;
     font-feature-settings: "cv02","cv03","cv04","cv11";
     
-    /* Color palette for blue theme */
-    --color-1: 240 100% 63%;
-    --color-2: 220 100% 63%;
-    --color-3: 200 100% 63%;
-    --color-4: 180 100% 63%;
-    --color-5: 160 100% 63%;
-    
+    --color-1: 0 100% 63%;
+    --color-2: 270 100% 63%;
+    --color-3: 210 100% 63%;
+    --color-4: 195 100% 63%;
+    --color-5: 90 100% 63%;
     --swiper-theme-color: #3b82f6;
     --swiper-navigation-size: 44px;
+
     --flashsale-image: url('https://client-cdn.bangjeff.com/veinstore.id/meta/background.webp');
-    
-    /* Blue theme backgrounds */
-    --recommendation-background: 220 91% 25%;
-    --popular-background: 220 30% 18%;
+    --recommendation-background: 215.13 100% 37.84%;
+    --popular-background: 215.56 21.6% 24.51%;
     --popular-image: url('https://client-cdn.bangjeff.com/veinstore.id/meta/background.webp');
-    --product-background: 220 30% 18%;
+    --product-background: 215.56 21.6% 24.51%;
+
     --order-header: 220 30% 18%;
     --order-variant: 220 30% 18%;
     --order-variant-foreground: 0 0% 100%;
@@ -50,32 +46,42 @@
     --button-gradient-to-stop: 100%;
     --button-gradient-theme: linear-gradient(to bottom, #60a5fa 0%, #3b82f6 50%, #1d4ed8 100%);
     
-    /* Dark Blue Theme Colors */
-    --background: 220 26% 6%;           /* Very dark blue background */
-    --foreground: 213 31% 91%;          /* Light blue-white text */
-    --card: 220 23% 9%;                 /* Dark blue card */
-    --card-foreground: 213 31% 91%;     /* Light text on cards */
-    --popover: 220 26% 8%;              /* Popover background */
-    --popover-foreground: 213 31% 91%;  /* Popover text */
-    --primary: 217 91% 60%;             /* Bright blue primary */
-    --primary-foreground: 220 26% 6%;   /* Dark text on primary */
-    --secondary: 220 20% 14%;           /* Secondary blue */
-    --secondary-foreground: 213 31% 91%;/* Light text on secondary */
-    --muted: 220 17% 20%;               /* Muted blue */
-    --muted-foreground: 213 15% 70%;    /* Muted text */
-    --accent: 217 32% 17%;              /* Accent blue */
-    --accent-foreground: 213 31% 91%;   /* Light text on accent */
-    --success: 142 70% 45%;             /* Keep green for success */
-    --success-foreground: 213 31% 91%;  /* Light text */
-    --warning: 38 92% 50%;              /* Amber warning */
-    --warning-foreground: 220 26% 6%;   /* Dark text on warning */
-    --info: 217 91% 60%;                /* Blue info (same as primary) */
-    --info-foreground: 220 26% 6%;      /* Dark text on info */
-    --destructive: 0 84% 50%;           /* Red destructive */
-    --destructive-foreground: 213 31% 91%; /* Light text */
-    --border: 220 20% 18%;              /* Blue border */
-    --input: 220 20% 16%;               /* Input background */
-    --ring: 217 91% 60%;                /* Focus ring */
+    --background: 220 19.15% 9.22%;
+    --foreground: 0 0% 96.08%;
+    --card: 212 23.81% 12.35%;
+    --card-foreground: 0 0% 96.08%;
+    --popover: 192 9.8% 10%;
+    --popover-foreground: 0 0% 96.08%;
+    --primary: 36.61 100% 50.2%;
+    --primary-foreground: 0 0% 96.08%;
+    --secondary: 212 23.81% 12.35%;
+    --secondary-foreground: 0 0% 96.08%;
+    --muted: 210 23.26% 16.86%;
+    --muted-foreground: 0 0% 96.08%;
+    --accent: 0 2.04% 71.18%;
+    --accent-foreground: 0 0% 96.08%;
+    --success: 142.09 70.56% 45.29%;
+    --success-foreground: 0 0% 96.08%;
+    --warning: 45.4 93.39% 47.45%;
+    --warning-foreground: 0 0% 96.08%;
+    --info: 217.22 91.22% 59.8%;
+    --info-foreground: 213.33 96.92% 87.25%;
+    --destructive: 332 60% 44.12%;
+    --destructive-foreground: 0 0% 96.08%;
+    --border: 213 93% 64% / 0.2; /* rgba(79, 156, 249, 0.2) */
+    --input: 215.56 21.6% 24.51%;
+    --ring: 215.13 100% 37.84%;
+    --chart-1: 12 76% 61%;
+
+    --chart-2: 173 58% 39%;
+
+    --chart-3: 197 37% 24%;
+
+    --chart-4: 43 74% 66%;
+
+    --chart-5: 27 87% 67%;
+
+    --radius: 0.5rem;
     
     color-scheme: dark;
     line-height: inherit;
@@ -164,6 +170,8 @@
   }
   body {
     @apply bg-background text-foreground;
+        font-family: "Poppins", sans-serif;
+
   }
 }
 
