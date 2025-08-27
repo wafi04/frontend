@@ -1,5 +1,9 @@
 import { api } from "@/lib/axios";
-import { PaymentMethod, UpdateMethodData } from "@/types/method";
+import {
+  PaymentMethod,
+  ResponseMethod,
+  UpdateMethodData,
+} from "@/types/method";
 import { API_RESPONSE, ApiPagination } from "@/types/response";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -37,24 +41,24 @@ export function useGetAllMethod() {
 //   };
 // }
 
-// export function useGetByType(type: string) {
-//   const { data, isLoading, error } = useQuery({
-//     queryKey: ["", type],
-//     queryFn: async () => {
-//       const data = await api.get<API_RESPONSE<[]>>(
-//         `//type/${type}`
-//       );
-//       return data.data;
-//     },
-//     staleTime: 5 * 6000,
-//     gcTime: 5 * 6000,
-//   });
-//   return {
-//     data,
-//     isLoading,
-//     error,
-//   };
-// }
+export function useGetMethodByType() {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["methods-by-type"],
+    queryFn: async () => {
+      const data = await api.get<API_RESPONSE<ResponseMethod[]>>(
+        `/method/type`
+      );
+      return data.data;
+    },
+    staleTime: 5 * 6000,
+    gcTime: 5 * 6000,
+  });
+  return {
+    data,
+    isLoading,
+    error,
+  };
+}
 
 // export function useCreate() {
 //   const queryClient = useQueryClient();

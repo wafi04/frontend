@@ -17,22 +17,16 @@ export class Api {
     this.instance = axios.create({
       baseURL: "http://localhost:9000/api/v1",
       withCredentials: true,
+      headers: {
+        branchname: "utama",
+        branchcode: "b246285b-d9ed-4eca-afbd-ad86b284c5b2",
+      },
     });
 
     this.instance.interceptors.response.use(
       (response: AxiosResponse) => response,
       async (error: AxiosError) => {
         const originalRequest = error.config as any;
-
-        // if (error.response?.status === 401 && !originalRequest._retry) {
-        //   originalRequest._retry = true;
-
-        //   if (typeof window !== "undefined") {
-        //     window.location.href = "/auth/login";
-        //   }
-
-        //   return Promise.reject();
-        // }
       }
     );
   }

@@ -4,14 +4,17 @@ export interface PaymentMethod {
   image: string;
   code: string;
   description: string;
-  type: "virtual-account" | "qris" | "cstore" | "e-wallet" | "bank_transfer";
+  type: string;
   minAmount: number;
   maxAmount: number;
   status: "active" | "inactive";
   createdAt: string;
   updatedAt: string;
 }
-
+export type ResponseMethod = {
+  type: string;
+  methods: PaymentMethod[];
+};
 export interface CreateMethodData {
   code: string;
   name: string;
