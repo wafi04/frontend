@@ -41,7 +41,7 @@ export const menuItems: MenuItem[] = [
     href: "/dashboard/users",
     badge: "12",
     subItems: [
-      { label: "All Users", href: "/dashboard/users/all" },
+      { label: "All Users", href: "/dashboard/users" },
       { label: "Roles", href: "/dashboard/users/roles" },
       { label: "Permissions", href: "/dashboard/users/permissions" },
     ],

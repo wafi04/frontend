@@ -9,3 +9,15 @@ export interface User {
   user_agent: string;
   username: string;
 }
+
+export interface UserData {
+  balance: 0;
+  branchName: string;
+  createdAt: string;
+  email: string;
+  id: 9;
+  isActive: true;
+  roleName: string;
+  updatedAt: string;
+  username: string;
+}
