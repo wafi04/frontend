@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from "axios";
-import { API_RESPONSE } from "@/types/response";
+import { API_RESPONSE } from "@/shared/types/response";
 
 interface ApiError {
   message: string;
@@ -18,8 +18,8 @@ export class Api {
       baseURL: "http://localhost:9000/api/v1",
       withCredentials: true,
       headers: {
-        branchname: "utama",
-        branchcode: "b246285b-d9ed-4eca-afbd-ad86b284c5b2",
+        Branchname: "utama",
+        Branchcode: "b246285b-d9ed-4eca-afbd-ad86b284c5b2",
       },
     });
 

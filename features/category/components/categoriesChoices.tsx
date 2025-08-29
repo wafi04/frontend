@@ -2,7 +2,7 @@
 
 import { useGetAllCategory } from "@/features/category/hooks/api"
 import { useFilterMain } from "@/features/subcategories/hooks/filterMain"
-import type { Category } from "@/types/category"
+import type { Category } from "@/shared/types/category"
 
 export function CategoriesChoices() {
   const { data, isLoading } = useGetAllCategory()
@@ -34,7 +34,15 @@ export function CategoriesChoices() {
 
   return (
      <section className="w-full my-10 mx-auto ">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-2">
+     <div className="text-center mb-6 space-y-2">
+    <h3 className="text-2xl font-bold ">
+      ✨ Kategori Pilihan Terbaik
+    </h3>
+    <p className="text-gray-300 text-sm md:text-base">
+      Temukan layanan digital terpercaya dengan harga terjangkau
+    </p>
+  </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-6 gap-2">
           {sortedCategories.map((category: Category) => (
             <button
               key={category.id}

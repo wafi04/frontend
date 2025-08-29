@@ -1,7 +1,6 @@
 "use client"
-
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import type { ProductWithProvider } from "@/types/productWithProvider"
+import type { ProductWithProvider } from "@/shared/types/productWithProvider"
 import {formatDate } from "@/utils/format"
 import { Switch } from "@/components/ui/switch"
 import { Badge } from "@/components/ui/badge"

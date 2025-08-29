@@ -1,9 +1,9 @@
 // hooks/useUpdateCategory.ts
 
-import { CategoryOmit } from "@/types/category";
+import { CategoryOmit } from "@/shared/types/category";
 import { useState, useEffect, useCallback } from "react";
 import { useDeleteMethodMutation, useUpdateMethodMutation } from "./api";
-import { PaymentMethod } from "@/types/method";
+import { PaymentMethod } from "@/shared/types/method";
 
 interface useUpdateMethodProps {
   data: PaymentMethod[];

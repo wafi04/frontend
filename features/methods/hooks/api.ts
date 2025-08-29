@@ -3,8 +3,8 @@ import {
   PaymentMethod,
   ResponseMethod,
   UpdateMethodData,
-} from "@/types/method";
-import { API_RESPONSE, ApiPagination } from "@/types/response";
+} from "@/shared/types/method";
+import { API_RESPONSE, ApiPagination } from "@/shared/types/response";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useGetAllMethod() {

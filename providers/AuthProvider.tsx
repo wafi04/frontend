@@ -2,8 +2,8 @@
 "use client";
 
 import { ReactNode, useEffect } from "react";
-import { useAuthQuery } from "@/hooks/useAuthQuery";
-import { useAuthStore } from "@/hooks/authStore";
+import { useAuthQuery } from "@/shared/hooks/useAuthQuery";
+import { useAuthStore } from "@/shared/hooks/authStore";
 
 export function AuthInitProvider({ children }: { children: ReactNode }) {
   const { data: user, isLoading, error } = useAuthQuery();

@@ -1,13 +1,13 @@
 // hooks/useUpdateCategory.ts
 
 import { useUpdateCategoryMutation } from "@/features/category/hooks/api";
-import { CategoryOmit } from "@/types/category";
+import { CategoryOmit } from "@/shared/types/category";
 import { useState, useEffect, useCallback } from "react";
 import {
   useDeleteSubCategoryMutation,
   useUpdateSubCategoryMutation,
 } from "./api";
-import { SubCategory } from "@/types/subcategory";
+import { SubCategory } from "@/shared/types/subcategory";
 
 interface useUpdateSubCategoryProps {
   data: SubCategory[];

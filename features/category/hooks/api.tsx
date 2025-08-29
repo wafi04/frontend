@@ -1,6 +1,6 @@
 import { api } from "@/lib/axios";
-import { Category } from "@/types/category";
-import { API_RESPONSE } from "@/types/response";
+import { Category } from "@/shared/types/category";
+import { API_RESPONSE } from "@/shared/types/response";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useGetAllCategory() {

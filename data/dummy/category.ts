@@ -1,4 +1,4 @@
-import { Category, CategoryOmit } from "@/types/category";
+import { Category, CategoryOmit } from "@/shared/types/category";
 
 export const dataCategories: CategoryOmit[] = [
   {

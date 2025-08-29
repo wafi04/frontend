@@ -3,7 +3,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { AuthPage } from "../component/FormAuth";
-import { LoginFormData, sanitizeInput } from "@/schemas/auth";
+import { LoginFormData, sanitizeInput } from "@/shared/schemas/auth";
 import { useEffect, useState } from "react";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useLoginMutation } from "../hooks/api";

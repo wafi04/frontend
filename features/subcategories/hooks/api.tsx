@@ -1,6 +1,6 @@
 import { api } from "@/lib/axios";
-import { API_RESPONSE, ApiPagination } from "@/types/response";
-import { SubCategory } from "@/types/subcategory";
+import { API_RESPONSE, ApiPagination } from "@/shared/types/response";
+import { SubCategory } from "@/shared/types/subcategory";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useGetAllSubCategory() {

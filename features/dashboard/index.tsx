@@ -1,5 +1,5 @@
-import { useAuthStore } from "@/hooks/authStore";
-import { useAuthQuery } from "@/hooks/useAuthQuery";
+import { useAuthStore } from "@/shared/hooks/authStore";
+import { useAuthQuery } from "@/shared/hooks/useAuthQuery";
 
 export default function DashboardPage() {
   const { data } = useAuthQuery();

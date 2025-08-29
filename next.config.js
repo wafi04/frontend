@@ -16,6 +16,9 @@ const nextConfig = {
       },
       {
         hostname : "client-cdn.bangjeff.com"
+      },
+      {
+        hostname : "vazzuniverse.id"
       }
     ]
   }

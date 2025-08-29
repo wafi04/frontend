@@ -1,6 +1,6 @@
 "use client";
 
-import { CategoryOmit } from "@/types/category";
+import { CategoryOmit } from "@/shared/types/category";
 import {
   Table,
   TableBody,

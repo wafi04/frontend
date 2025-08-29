@@ -2,7 +2,7 @@ import {
   MethodGrubResponse,
   MethodData,
 } from "@/features/dashboard/methods/types/method";
-import { API_RESPONSE } from "@/types/response";
+import { API_RESPONSE } from "@/shared/types/response";
 import { useState } from "react";
 import { ChevronDownIcon } from "lucide-react";
 import {

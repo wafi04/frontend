@@ -17,7 +17,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { HeaderDashboard } from "@/features/dashboard/components/headerDashboard";
-import { PaymentMethod } from "@/types/method";
+import { PaymentMethod } from "@/shared/types/method";
 import { Check, Save, Trash2 } from "lucide-react";
 import { paymentMethodTypes } from "../hooks/typeMethod";
 import { useUpdateMethod } from "../hooks/useUpdateMethod";

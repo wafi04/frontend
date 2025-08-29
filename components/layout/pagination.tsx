@@ -1,4 +1,4 @@
-import { PaginationResponse } from "@/types/response";
+import { PaginationResponse } from "@/shared/types/response";
 import { Button } from "../ui/button";
 
 export const PaginationComponents = ({

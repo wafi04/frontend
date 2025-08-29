@@ -1,6 +1,6 @@
 // components/CardProfile.tsx
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { User } from "@/types/user";
+import { User } from "@/shared/types/user";
 import { CustomUserBadge } from "./userBadge";
 import { formatDate } from "@/utils/format";
 

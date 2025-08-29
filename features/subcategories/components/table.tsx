@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { SubCategory } from "@/types/subcategory";
+import { SubCategory } from "@/shared/types/subcategory";
 import { Switch } from "@/components/ui/switch";
 import { useUpdateSubCategory } from "../hooks/useUpdate";
 import { Button } from "@/components/ui/button";

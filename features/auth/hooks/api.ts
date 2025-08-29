@@ -1,8 +1,8 @@
 "use client";
 
 import { api } from "@/lib/axios";
-import { LoginFormData, RegisterFormData } from "@/schemas/auth";
-import { ErrorResponse } from "@/types/response";
+import { LoginFormData, RegisterFormData } from "@/shared/schemas/auth";
+import { ErrorResponse } from "@/shared/types/response";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";

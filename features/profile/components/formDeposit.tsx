@@ -13,7 +13,7 @@ import {
   Wallet,
   Banknote,
 } from "lucide-react";
-import { PaymentMethod, ResponseMethod } from "@/types/method"; // Pastikan interface di-import
+import { PaymentMethod, ResponseMethod } from "@/shared/types/method"; // Pastikan interface di-import
 
 // --- Icon Mapping ---
 const MethodIcon = (type: string) => {

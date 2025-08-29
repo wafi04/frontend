@@ -7,7 +7,7 @@ interface FilterState {
 }
 
 export const useFilterMain = create<FilterState>((set) => ({
-  category: 7,
+  category: 2,
   setCategory: (category: number) => set({ category }),
   resetCategory: () => set({ category: 0 })
 }))

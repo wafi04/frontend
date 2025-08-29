@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useAuthStore } from "@/hooks/authStore";
+import { useAuthStore } from "@/shared/hooks/authStore";
 import CardProfile from "../../components/profileCard";
 import { FormatCurrency } from "@/utils/format";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";

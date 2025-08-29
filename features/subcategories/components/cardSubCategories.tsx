@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useGetSubCategoryByCategories } from "../hooks/api";
 import Image from "next/image";
-import { SubCategory } from "@/types/subcategory";
+import { SubCategory } from "@/shared/types/subcategory";
 import { useFilterMain } from "../hooks/filterMain";
 
 function SubCategoryCard({ item }: { item: SubCategory }) {

@@ -1,6 +1,6 @@
 // hooks/useUpdateCategory.ts
 
-import { CategoryOmit } from "@/types/category";
+import { CategoryOmit } from "@/shared/types/category";
 import { useState, useEffect, useCallback } from "react";
 import { useDeleteCategoryMutation, useUpdateCategoryMutation } from "./api";
 
