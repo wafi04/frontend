@@ -1,7 +1,5 @@
-// src/stores/authStore.ts
 import { User } from "@/shared/types/user";
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 
 interface AuthState {
   user: User | null;

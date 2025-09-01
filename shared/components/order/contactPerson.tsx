@@ -8,7 +8,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { HeaderOrder } from "./headerOrder";
+import { HeaderOrder } from "../../../features/order/components/headerOrder";
 
 // Types
 interface Country {

@@ -6,6 +6,8 @@ export interface PaymentMethod {
   description: string;
   type: string;
   minAmount: number;
+  fee: number;
+  feeType: string;
   maxAmount: number;
   status: "active" | "inactive";
   createdAt: string;

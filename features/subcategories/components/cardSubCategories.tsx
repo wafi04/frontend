@@ -7,14 +7,14 @@ import { useFilterMain } from "../hooks/filterMain";
 function SubCategoryCard({ item }: { item: SubCategory }) {
   return (
     <Link
+      key={item.id}
       className="relative outline-none opacity-100 transform-none"
       tabIndex={0}
-      href={`/id-id/${item.brand}`}
+      href={`/order/${item.subName.trim().toLowerCase()}`}
     >
       <div className="group relative transform overflow-hidden rounded-2xl bg-muted duration-300 ease-in-out hover:shadow-2xl hover:ring-2 hover:ring-primary hover:ring-offset-2 hover:ring-offset-background">
         <Image
           alt="Roblox"
-          fetchPriority="high"
           width={192}
           height={288}
           decoding="async"

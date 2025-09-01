@@ -32,7 +32,6 @@ export function PopulerSection() {
               <div className="flex items-center gap-3 p-[--card-padding]">
                 <img
                   alt="Mobile Legends"
-                  fetchPriority="high"
                   width="56"
                   height="56"
                   decoding="async"

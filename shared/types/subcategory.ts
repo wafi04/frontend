@@ -9,7 +9,23 @@ export interface SubCategory {
   instruction: string;
   isActive: boolean;
   isCheckNickname: boolean;
-  created_at: string; 
-  updated_at: string; 
+  created_at: string;
+  updated_at: string;
 }
 
+export interface ProductOrder {
+  productName: string;
+  productCode: string;
+  productPrice: number;
+}
+
+export interface SubCategoryWithProducts {
+  subCategoryName: string;
+  subCategorySubName: string;
+  subCategoryThumbnail: string;
+  subCategoryBanner: string;
+  productTypes: {
+    products: ProductOrder[];
+    typeName: string;
+  }[];
+}

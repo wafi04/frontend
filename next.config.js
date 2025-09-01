@@ -1,27 +1,34 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  images : {
-    remotePatterns : [
+  images: {
+    remotePatterns: [
       {
-         hostname : "images.tokopedia.net"
-      },{
-        hostname : "cdn.ourastore.com"
+        hostname: "images.tokopedia.net",
       },
       {
-        hostname : "www.ourastore.com"
+        hostname: "cdn.ourastore.com",
       },
       {
-        hostname : "res.cloudinary.com"
+        hostname: "www.ourastore.com",
       },
       {
-        hostname : "client-cdn.bangjeff.com"
+        hostname: "res.cloudinary.com",
       },
       {
-        hostname : "vazzuniverse.id"
-      }
-    ]
-  }
-}
+        hostname: "client-cdn.bangjeff.com",
+      },
+      {
+        hostname: "vazzuniverse.id",
+      },
+      {
+        hostname: "www.veinstore.id",
+      },
+      {
+        hostname: "semutganteng.fra1.digitaloceanspaces.com",
+      },
+    ],
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

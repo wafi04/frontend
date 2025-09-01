@@ -11,17 +11,17 @@ export function Footer() {
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           {/* Logo dan Deskripsi */}
           <div className="space-y-8">
-            <img
+            {/* <img
               alt="Logo Veinstore"
               width={500}
               height={500}
               className="h-16 w-auto"
               src="https://client-cdn.bangjeff.com/veinstore.id/meta/veinstore-ezgif.com-resize.gif"
-            />
+            /> */}
             <p className="text-sm leading-6 text-secondary-foreground">
-              Veinstore adalah Platform Resmi Untuk Semua Kebutuhan TopUp &
-              Voucher Game. Menyediakan Harga Termurah, Proses Cepat, dan
-              Kebutuhan Lainnya dengan harga Kompetitif.
+              adalah Platform Resmi Untuk Semua Kebutuhan TopUp & Voucher Game.
+              Menyediakan Harga Termurah, Proses Cepat, dan Kebutuhan Lainnya
+              dengan harga Kompetitif.
             </p>
 
             {/* Social Media */}
@@ -239,7 +239,7 @@ export function Footer() {
         {/* Copyright */}
         <div className="mt-16 flex items-center justify-between border-t border-background/50 pt-8 sm:mt-20 lg:mt-24">
           <p className="text-xs leading-5 text-secondary-foreground">
-            © 2025 PT. VEINSTORE DIGITAL TEKNOLOGI. All rights reserved.
+            {/* © 2025 PT. VEINSTORE DIGITAL TEKNOLOGI. All rights reserved. */}
           </p>
 
           {/* Toggle Theme */}

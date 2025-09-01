@@ -1,21 +1,29 @@
-"use client"
+"use client";
 
-import Image from "next/image"
-import Link from "next/link"
-import { Search, X, Menu, Calculator, ShoppingBag, ReceiptText, TrendingUp } from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
-import { useState } from "react"
+import Image from "next/image";
+import Link from "next/link";
+import {
+  Search,
+  X,
+  Menu,
+  Calculator,
+  ShoppingBag,
+  ReceiptText,
+  TrendingUp,
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 
 export function Navbar() {
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navItems = [
     { label: "TopUp", href: "/", icon: ShoppingBag },
     { label: "Cek Transaksi", href: "/cek-transaksi", icon: ReceiptText },
     { label: "Leaderboard", href: "/leaderboard", icon: TrendingUp },
     { label: "Kalkulator", href: "/kalkulator", icon: Calculator },
-  ]
+  ];
 
   // Fixed Framer Motion variants
   const itemVariants = {
@@ -32,7 +40,7 @@ export function Navbar() {
         damping: 10,
       },
     },
-  }
+  };
 
   const iconVariants = {
     rest: {
@@ -45,7 +53,7 @@ export function Navbar() {
       rotate: 5,
       transition: { duration: 0.2 },
     },
-  }
+  };
 
   const underlineVariants = {
     rest: {
@@ -58,7 +66,7 @@ export function Navbar() {
       opacity: 1,
       transition: { duration: 0.2 },
     },
-  }
+  };
 
   return (
     <header className="sticky top-0 z-40 w-full bg-secondary/80 backdrop-blur-md duration-500 ease-in-out print:hidden">
@@ -71,15 +79,15 @@ export function Navbar() {
             transition={{ duration: 0.2 }}
           >
             <Link href="/id-id" className="outline-none">
-              <span className="sr-only">OURASTORE Logo</span>
-              <Image
+              <span className="sr-only"> Logo</span>
+              {/* <Image
                 alt="OURASTORE Logo"
                 width={1000}
                 height={1000}
                 className="h-9 w-auto lg:h-10 transition-all duration-200"
                 style={{ color: "transparent" }}
                 src="https://cdn.ourastore.com/ourastore.com/meta/ourastorelogo.png"
-              />
+              /> */}
             </Link>
           </motion.div>
 
@@ -111,7 +119,6 @@ export function Navbar() {
             >
               <Search className="size-5" />
             </motion.button>
-           
 
             {/* Mobile menu button */}
             <div className="block md:hidden">
@@ -122,7 +129,10 @@ export function Navbar() {
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               >
-                <motion.div animate={{ rotate: isMobileMenuOpen ? 90 : 0 }} transition={{ duration: 0.2 }}>
+                <motion.div
+                  animate={{ rotate: isMobileMenuOpen ? 90 : 0 }}
+                  transition={{ duration: 0.2 }}
+                >
                   <Menu className="size-5" />
                 </motion.div>
               </motion.button>
@@ -171,16 +181,22 @@ export function Navbar() {
           transition={{ staggerChildren: 0.1 }}
         >
           {navItems.map((item, index) => {
-            const IconComponent = item.icon
-            const isActive = item.label === "TopUp" 
+            const IconComponent = item.icon;
+            const isActive = item.label === "TopUp";
 
             return (
               <motion.div key={item.label} variants={itemVariants}>
-                <motion.div initial="rest" whileHover="hover" className="relative h-full">
+                <motion.div
+                  initial="rest"
+                  whileHover="hover"
+                  className="relative h-full"
+                >
                   <Link
                     href={item.href}
                     className={`relative inline-flex h-12 items-center gap-2 text-sm font-medium transition-colors duration-200 ${
-                      isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
+                      isActive
+                        ? "text-primary"
+                        : "text-muted-foreground hover:text-foreground"
                     }`}
                   >
                     <motion.div variants={iconVariants}>
@@ -200,7 +216,7 @@ export function Navbar() {
                   )}
                 </motion.div>
               </motion.div>
-            )
+            );
           })}
         </motion.div>
       </nav>
@@ -217,8 +233,8 @@ export function Navbar() {
             <div className="container ">
               <div className="flex flex-col gap-2">
                 {navItems.map((item, index) => {
-                  const IconComponent = item.icon
-                  const isActive = item.label === "TopUp"
+                  const IconComponent = item.icon;
+                  const isActive = item.label === "TopUp";
 
                   return (
                     <motion.div
@@ -240,7 +256,7 @@ export function Navbar() {
                         <span>{item.label}</span>
                       </Link>
                     </motion.div>
-                  )
+                  );
                 })}
               </div>
             </div>
@@ -248,5 +264,5 @@ export function Navbar() {
         )}
       </AnimatePresence>
     </header>
-  )
+  );
 }

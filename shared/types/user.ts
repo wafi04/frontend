@@ -1,4 +1,5 @@
 export interface User {
+  id: number;
   balance: number;
   domain: string;
   email: string;
@@ -11,12 +12,12 @@ export interface User {
 }
 
 export interface UserData {
-  balance: 0;
+  balance: number;
   branchName: string;
   createdAt: string;
   email: string;
-  id: 9;
-  isActive: true;
+  id: number;
+  isActive: boolean;
   roleName: string;
   updatedAt: string;
   username: string;

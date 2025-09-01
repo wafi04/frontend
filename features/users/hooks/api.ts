@@ -1,19 +1,21 @@
+import { FilterRequest } from "@/features/product/hooks/api";
 import { api } from "@/lib/axios";
-import { ApiPagination } from "@/shared/types/response";
+import { API_RESPONSE, ApiPagination } from "@/shared/types/response";
 import { UserData } from "@/shared/types/user";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-interface FilterOptions {
-  limit: number;
-  page: number;
-  search: string;
-}
-
-export function useGetAllUser({ filter }: { filter?: FilterOptions }) {
+export function useGetAllUser({ filters }: { filters?: FilterRequest }) {
   const { data, error, isLoading } = useQuery({
-    queryKey: ["users-all"],
+    queryKey: ["users-all", filters],
     queryFn: async () => {
-      const req = await api.get<ApiPagination<UserData[]>>("/user/all");
+      const params = new URLSearchParams();
+
+      if (filters?.limit) params.append("limit", filters.limit);
+      if (filters?.page) params.append("page", filters.page);
+      if (filters?.search) params.append("search", filters.search);
+      const req = await api.get<ApiPagination<UserData[]>>(
+        `/user/all?${params.toString()}`
+      );
       return req.data;
     },
     staleTime: 5 * 6000,
@@ -25,4 +27,63 @@ export function useGetAllUser({ filter }: { filter?: FilterOptions }) {
     isLoading,
     error,
   };
+}
+
+export function useGetAllUsername({ username }: { username?: string }) {
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["users", username],
+    queryFn: async () => {
+      const req = await api.get<
+        API_RESPONSE<{ id: number; username: string }[]>
+      >(`/user/all/username?search=${username}`);
+      return req.data;
+    },
+    staleTime: 5 * 6000,
+    gcTime: 5 * 6000,
+  });
+
+  return {
+    data,
+    isLoading,
+    error,
+  };
+}
+
+export function useUpdateUser() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      id,
+      data,
+    }: {
+      id: number;
+      data: {
+        roleID: number;
+        balance: number;
+      };
+    }) => {
+      const res = await api.patch(`/user/${id}`, data);
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users-all"] });
+    },
+  });
+}
+
+// =========================
+// DELETE ROLE
+// =========================
+export function useDeleteUser() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: number): Promise<void> => {
+      await api.post(`/user/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users-all"] });
+    },
+  });
 }

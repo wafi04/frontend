@@ -43,7 +43,7 @@ export const menuItems: MenuItem[] = [
     subItems: [
       { label: "All Users", href: "/dashboard/users" },
       { label: "Roles", href: "/dashboard/users/roles" },
-      { label: "Permissions", href: "/dashboard/users/permissions" },
+      { label: "Cabang", href: "/dashboard/users/cabang" },
     ],
   },
   {

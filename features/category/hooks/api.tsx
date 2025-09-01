@@ -1,13 +1,38 @@
+import { FilterRequest } from "@/features/product/hooks/api";
 import { api } from "@/lib/axios";
 import { Category } from "@/shared/types/category";
-import { API_RESPONSE } from "@/shared/types/response";
+import { API_RESPONSE, ApiPagination } from "@/shared/types/response";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-export function useGetAllCategory() {
+export function useGetAllCategory({ filters }: { filters?: FilterRequest }) {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["categories", filters],
+    queryFn: async () => {
+      const params = new URLSearchParams();
+
+      if (filters?.limit) params.append("limit", filters.limit);
+      if (filters?.page) params.append("page", filters.page);
+      if (filters?.search) params.append("search", filters.search);
+      const data = await api.get<ApiPagination<Category[]>>(
+        `/category?${params.toString()}`
+      );
+      return data.data;
+    },
+    staleTime: 5 * 6000,
+    gcTime: 5 * 6000,
+  });
+  return {
+    data,
+    isLoading,
+    error,
+  };
+}
+
+export function useGetAllCategoryActive() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
-      const data = await api.get<API_RESPONSE<Category[]>>("/category");
+      const data = await api.get<API_RESPONSE<Category[]>>(`/category/all`);
       return data.data;
     },
     staleTime: 5 * 6000,

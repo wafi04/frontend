@@ -1,5 +1,3 @@
-// hooks/useUpdateCategory.ts
-
 import { CategoryOmit } from "@/shared/types/category";
 import { useState, useEffect, useCallback } from "react";
 import { useDeleteCategoryMutation, useUpdateCategoryMutation } from "./api";
@@ -44,12 +42,14 @@ export function useUpdateCategory({
       }
     });
     setUnsavedChanges(changed);
-  }, [editingData, data]); 
+  }, [editingData, data]);
 
   const handleFieldChange = useCallback(
     (id: number, field: string, value: any) => {
       setEditingData((prev) =>
-        prev.map((item) => (item.id === id ? { ...item, [field]: value } : item))
+        prev.map((item) =>
+          item.id === id ? { ...item, [field]: value } : item
+        )
       );
     },
     []
@@ -67,7 +67,7 @@ export function useUpdateCategory({
             name: payload.name,
             description: payload.description,
             type: payload.type,
-            icon : payload.icon,
+            icon: payload.icon,
             sort_order: payload.sort_order,
             is_active: payload.is_active,
           },
@@ -80,12 +80,11 @@ export function useUpdateCategory({
     [editingData, updateMutation, onUpdateSuccess]
   );
 
-  // ✅ Hapus
   const handleDelete = useCallback(
     async (id: number) => {
       try {
         await deleteMutation.mutateAsync(id);
-        onUpdateSuccess?.(); // bisa juga onDeleteSuccess
+        onUpdateSuccess?.();
       } catch (error) {
         console.error("Failed to delete category:", error);
       }
@@ -95,8 +94,8 @@ export function useUpdateCategory({
 
   return {
     editingData,
-    hasUnsaved: (id: number) => unsavedChanges.has(id), // tetap bisa dipakai
-    unsavedChanges, // untuk akses langsung
+    hasUnsaved: (id: number) => unsavedChanges.has(id),
+    unsavedChanges,
     handleFieldChange,
     handleSave,
     handleDelete,
