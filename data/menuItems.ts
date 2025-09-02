@@ -7,6 +7,7 @@ import {
   Inbox,
   Calendar,
   Wallet,
+  ChartBarIncreasing,
 } from "lucide-react";
 
 export interface SubMenuItem {
@@ -35,11 +36,21 @@ export const menuItems: MenuItem[] = [
     badge: null,
   },
   {
+   id: "transactions",
+   label: "Transactions",
+   icon: ChartBarIncreasing,
+   href: "/dashboard/transactions",
+   subItems: [
+     { label: "All Transacion", href: "/dashboard/transactions" },
+     { label: "Manual Transaction", href: "/dashboard/transactions/manual" },
+     { label: "Deposit", href: "/dashboard/transactions/deposit" },
+   ],
+ },
+  {
     id: "users",
     label: "Users",
     icon: Users,
     href: "/dashboard/users",
-    badge: "12",
     subItems: [
       { label: "All Users", href: "/dashboard/users" },
       { label: "Roles", href: "/dashboard/users/roles" },
@@ -62,7 +73,6 @@ export const menuItems: MenuItem[] = [
     label: "Inbox",
     icon: Inbox,
     href: "/inbox",
-    badge: "5",
   },
   {
     id: "method",

@@ -27,22 +27,12 @@ export function FilterDashboard({
           type="number"
           placeholder="Limit per page..."
           value={currentLimit}
-          min={1}
-          max={100}
           onChange={(e) => {
             const value = e.target.value;
-
-            // Handle empty input
-            if (value === "") {
-              setCurrentLimit(10); // default value
-              return;
-            }
-
             const numValue = Number(value);
-            // Validate range
-            if (numValue >= 1 && numValue <= 100) {
+
               setCurrentLimit(numValue);
-            }
+            
           }}
           className="w-32"
         />
