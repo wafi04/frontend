@@ -8,6 +8,7 @@ import {
   Calendar,
   Wallet,
   ChartBarIncreasing,
+  CaptionsIcon,
 } from "lucide-react";
 
 export interface SubMenuItem {
@@ -36,16 +37,16 @@ export const menuItems: MenuItem[] = [
     badge: null,
   },
   {
-   id: "transactions",
-   label: "Transactions",
-   icon: ChartBarIncreasing,
-   href: "/dashboard/transactions",
-   subItems: [
-     { label: "All Transacion", href: "/dashboard/transactions" },
-     { label: "Manual Transaction", href: "/dashboard/transactions/manual" },
-     { label: "Deposit", href: "/dashboard/transactions/deposit" },
-   ],
- },
+    id: "transactions",
+    label: "Transactions",
+    icon: ChartBarIncreasing,
+    href: "/dashboard/transactions",
+    subItems: [
+      { label: "All Transacion", href: "/dashboard/transactions" },
+      { label: "Manual Transaction", href: "/dashboard/transactions/manual" },
+      { label: "Deposit", href: "/dashboard/transactions/deposit" },
+    ],
+  },
   {
     id: "users",
     label: "Users",
@@ -66,6 +67,16 @@ export const menuItems: MenuItem[] = [
       { label: "Kategori", href: "/dashboard/category" },
       { label: "Produk", href: "/dashboard/product" },
       { label: "Sub Kategori", href: "/dashboard/subcategory" },
+    ],
+  },
+  {
+    id: "events",
+    label: "events",
+    icon: CaptionsIcon,
+    href: "/dashboard/flash-sales",
+    subItems: [
+      { label: "Flash Sale", href: "/dashboard/flash-sales" },
+      { label: "Voucher", href: "/dashboard/voucher" },
     ],
   },
   {
