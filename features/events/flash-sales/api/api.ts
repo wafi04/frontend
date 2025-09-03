@@ -1,7 +1,7 @@
 import { api } from "@/lib/axios";
-import { FlashSale } from "@/shared/types/flash-sales";
+import { CreateFlashSaleRequest, FlashSale } from "@/shared/types/flash-sales";
 import { API_RESPONSE } from "@/shared/types/response";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function UseGetAllFlashSales() {
   const { data, isLoading, error } = useQuery({
@@ -18,4 +18,58 @@ export function UseGetAllFlashSales() {
     isLoading,
     error,
   };
+}
+
+export function useCreateFlashSale() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: CreateFlashSaleRequest) => {
+      const response = await api.post("/flash-sales", data);
+      return response.data;
+    },
+    onSuccess: () => {
+      // Invalidate dan refetch flashsales list setelah create berhasil
+      queryClient.invalidateQueries({ queryKey: ["flash-sales"] });
+      queryClient.invalidateQueries({
+        queryKey: ["flash-sales-active"],
+      });
+    },
+  });
+}
+
+export function useDeleteflashsale() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: number) => {
+      const response = await api.delete(`/flash-sales/${id}`);
+      return response.data;
+    },
+    onSuccess: () => {
+      // Invalidate dan refetch flashsales list setelah create berhasil
+      queryClient.invalidateQueries({ queryKey: ["flash-sales"] });
+      queryClient.invalidateQueries({
+        queryKey: ["flash-sales-active"],
+      });
+    },
+  });
+}
+export function useUpdateflashsale() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      id,
+      ...data
+    }: CreateFlashSaleRequest & { id: number }) => {
+      const response = await api.put(`/flash-sales/${id}`, data);
+      return response.data;
+    },
+    onSuccess: () => {
+      // Invalidate dan refetch flashsales list setelah update berhasil
+      queryClient.invalidateQueries({ queryKey: ["flash-sales"] });
+      queryClient.invalidateQueries({ queryKey: ["flash-sales-active"] });
+    },
+  });
 }

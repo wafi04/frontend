@@ -71,7 +71,7 @@ export const menuItems: MenuItem[] = [
   },
   {
     id: "events",
-    label: "events",
+    label: "Events",
     icon: CaptionsIcon,
     href: "/dashboard/flash-sales",
     subItems: [
