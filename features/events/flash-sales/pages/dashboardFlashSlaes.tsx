@@ -4,7 +4,6 @@ import { TableFlashSales } from "../components/table";
 
 export default function DashbordFlashSales() {
   const { data } = UseGetAllFlashSales();
-  console.log(data);
   return (
     <main className="p-10">
       <HeaderDashboard />

@@ -3,6 +3,7 @@ import { useDebounce } from "@/shared/hooks/use-debounce";
 import { ProductWithProvider } from "@/shared/types/productWithProvider";
 import { API_RESPONSE, ApiPagination } from "@/shared/types/response";
 import { useQuery } from "@tanstack/react-query";
+import { Search } from "lucide-react";
 
 export interface FilterRequest {
   limit: string;
@@ -38,4 +39,38 @@ export function useGetProductWithProvider(filters?: FilterRequest) {
     isLoading,
     error,
   };
+}
+
+interface Product {
+hargaModal: number
+id: number
+isActive: boolean
+productCode: string
+product_name: string
+}
+
+
+export function useGetAllSearchProduct(search? : string){
+  const debouncedSearch = useDebounce(search,500)
+  const {
+    data,
+    isLoading,
+    error
+  } = useQuery({
+      queryKey : ['search-products',search],
+      queryFn : async ()  => {
+        const req = await api.get<API_RESPONSE<Product[]>>(`/products/search?query=${debouncedSearch}`)
+        return req.data
+      },
+      staleTime : 5 * 6000,
+     gcTime : 5 * 6000,
+      enabled : !!search
+  })
+
+
+  return {
+    data,
+    isLoading,
+    error
+  }
 }
