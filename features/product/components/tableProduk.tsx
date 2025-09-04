@@ -11,18 +11,33 @@ import type { ProductWithProvider } from "@/shared/types/productWithProvider";
 import { formatDate } from "@/utils/format";
 import { Switch } from "@/components/ui/switch";
 import { useState } from "react";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronRight, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useDeleteProducts, useUpdateProduct } from "../hooks/api";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 
 export function TableProduct({ data }: { data: ProductWithProvider[] }) {
   const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());
+  const [localProducts, setLocalProducts] =
+    useState<ProductWithProvider[]>(data);
+  const { mutate } = useUpdateProduct();
 
-  const getProviderName = (
-    providerId: number,
-    providers: ProductWithProvider["providers"]
-  ) => {
-    const provider = providers.find((p) => p.providerId === providerId);
-    return provider ? provider.providerName : `Provider ${providerId}`;
+  const hasChanges = (product: ProductWithProvider) => {
+    const original = data.find((p) => p.productId === product.productId);
+    if (!original) return false;
+
+    return (
+      original.productName !== product.productName ||
+      original.productCode !== product.productCode ||
+      original.productIsActive !== product.productIsActive ||
+      original.productMainProvider !== product.productMainProvider
+    );
   };
 
   const toggleExpanded = (productId: number) => {
@@ -44,6 +59,31 @@ export function TableProduct({ data }: { data: ProductWithProvider[] }) {
     });
     return Array.from(roleNames).sort();
   };
+
+  function handleSave(productId: number) {
+    const product = localProducts.find((p) => p.productId === productId);
+    if (!product) return;
+
+    mutate(
+      {
+        productId,
+        data: {
+          isActive: product.productIsActive,
+          mainProviderId: product.productMainProvider,
+          product_name: product.productName,
+          productCode: product.productCode,
+        },
+      },
+      {
+        onSuccess: () => {
+          console.log("Update sukses");
+        },
+        onError: (err) => {
+          console.error("Update gagal", err);
+        },
+      }
+    );
+  }
 
   return (
     <section className="px-4">
@@ -69,18 +109,20 @@ export function TableProduct({ data }: { data: ProductWithProvider[] }) {
             <TableHead className="border border-gray-600 text-center">
               Provider Utama
             </TableHead>
-            <TableHead className="border border-gray-600 text-center">
-              Providers & Role Pricing
-            </TableHead>
+
             <TableHead className="border border-gray-600 text-center">
               Terakhir Update
+            </TableHead>
+            <TableHead className="border border-gray-600 text-center">
+              Action
             </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody className="border border-gray-600">
           {data.length > 0 ? (
-            data.map((product) => {
+            localProducts.map((product) => {
               const roleNames = getAllRoleNames(product.providers);
+              const changed = hasChanges(product);
 
               return (
                 <>
@@ -106,35 +148,94 @@ export function TableProduct({ data }: { data: ProductWithProvider[] }) {
                       {product.productId}
                     </TableCell>
                     <TableCell className="font-medium border border-gray-600 text-center">
-                      {product.productName}
+                      <input
+                        value={product.productName}
+                        onChange={(e) =>
+                          setLocalProducts((prev) =>
+                            prev.map((p) =>
+                              p.productId === product.productId
+                                ? { ...p, productName: e.target.value }
+                                : p
+                            )
+                          )
+                        }
+                        className="bg-transparent border-none focus:outline-none focus:ring-0 text-center w-full"
+                      />
                     </TableCell>
                     <TableCell className="border border-gray-600">
-                      {product.productCode}
+                      <input
+                        value={product.productCode}
+                        onChange={(e) =>
+                          setLocalProducts((prev) =>
+                            prev.map((p) =>
+                              p.productId === product.productId
+                                ? { ...p, productCode: e.target.value }
+                                : p
+                            )
+                          )
+                        }
+                        className="bg-transparent border-none focus:outline-none focus:ring-0 text-center w-fit"
+                      />
                     </TableCell>
                     <TableCell className="font-mono border border-gray-600 text-center">
                       {product.productHargaModal}
                     </TableCell>
                     <TableCell className="border border-gray-600">
                       <div className="flex justify-center">
-                        <Switch checked={product.productIsActive} disabled />
+                        <Switch
+                          checked={product.productIsActive}
+                          onCheckedChange={(val) =>
+                            setLocalProducts((prev) =>
+                              prev.map((p) =>
+                                p.productId === product.productId
+                                  ? { ...p, productIsActive: val }
+                                  : p
+                              )
+                            )
+                          }
+                        />
                       </div>
                     </TableCell>
                     <TableCell className="border border-gray-600 text-center">
-                      {getProviderName(
-                        product.productMainProvider,
-                        product.providers
-                      )}
+                      <Select
+                        value={String(product.productMainProvider)}
+                        onValueChange={(val) =>
+                          setLocalProducts((prev) =>
+                            prev.map((p) =>
+                              p.productId === product.productId
+                                ? { ...p, productMainProvider: Number(val) }
+                                : p
+                            )
+                          )
+                        }
+                      >
+                        <SelectTrigger className="w-full bg-transparent border-none focus:ring-0 text-center">
+                          <SelectValue placeholder="Pilih provider utama" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {product.providers.map((provider) => (
+                            <SelectItem
+                              key={provider.providerId}
+                              value={String(provider.providerId)}
+                            >
+                              {provider.providerName}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </TableCell>
-                    <TableCell className="border border-gray-600 text-center">
-                      <div className="flex flex-col items-center space-y-1">
-                        <span className="font-medium">
-                          {product.providers.length} providers
-                        </span>
-                        <span className="text-xs text-muted-foreground"></span>
-                      </div>
-                    </TableCell>
+
                     <TableCell className="text-muted-foreground border border-gray-600">
                       {formatDate(product.updatedAt)}
+                    </TableCell>
+                    <TableCell className="text-muted-foreground border border-gray-600">
+                      <Button
+                        onClick={() => handleSave(product.productId)}
+                        variant={changed ? "default" : "secondary"}
+                        disabled={!changed}
+                      >
+                        {changed ? "Save Changes" : "Saved"}
+                      </Button>
                     </TableCell>
                   </TableRow>
                   {expandedRows.has(product.productId) && (

@@ -1,4 +1,4 @@
-import Banner from "@/components/layout/banner";
+import Banner from "@/shared/components/banner/components/banner";
 import { CategoriesChoices } from "@/features/category/components/categoriesChoices";
 import { Navbar } from "@/components/layout/navbar";
 import CardSubCategories from "@/features/subcategories/components/cardSubCategories";

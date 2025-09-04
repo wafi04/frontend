@@ -12,6 +12,7 @@ import { Switch } from "@/components/ui/switch";
 import { useUpdateSubCategory } from "../hooks/useUpdate";
 import { Button } from "@/components/ui/button";
 import { Save, Trash2 } from "lucide-react";
+import { DialogUpdateImage } from "@/shared/components/upload/uploadImage";
 
 interface TableSubCategoriesProps {
   data: SubCategory[];
@@ -111,26 +112,22 @@ export function TableSubCategories({ data }: TableSubCategoriesProps) {
 
                 {/* Thumbnail */}
                 <TableCell className="border-r">
-                  <div className="flex items-center justify-center">
-                    <img
-                      src={item.thumbnail}
-                      alt={item.name}
-                      className="h-10 w-10 object-cover rounded-md border"
-                      
-                    />
-                  </div>
+                  <DialogUpdateImage
+                    width={50}
+                    height={50}
+                    className="h-10"
+                    image={item.thumbnail}
+                  />
                 </TableCell>
 
                 {/* Banner URL */}
                 <TableCell className="border-r">
-                  <div className="flex items-center justify-center">
-                    <img
-                      src={item.bannerUrl}
-                      alt="Banner"
-                      className="h-8 w-20 object-cover rounded border"
-                     
-                    />
-                  </div>
+                  <DialogUpdateImage
+                    width={50}
+                    height={50}
+                    className="h-10"
+                    image={item.bannerUrl}
+                  />
                 </TableCell>
 
                 {/* Information */}
@@ -153,12 +150,11 @@ export function TableSubCategories({ data }: TableSubCategoriesProps) {
                   className="border-r max-w-xs truncate text-sm"
                   title={item.instruction}
                 >
-                   <img
-                      src={item.instruction}
-                      alt="Banner"
-                      className="h-8 w-20 object-cover rounded border"
-                     
-                    />
+                  <img
+                    src={item.instruction}
+                    alt="Banner"
+                    className="h-8 w-20 object-cover rounded border"
+                  />
                 </TableCell>
 
                 {/* Is Active */}

@@ -25,13 +25,10 @@ import { useUpdateMethod } from "../hooks/useUpdateMethod";
 export function TableMethod({ data }: { data: PaymentMethod[] }) {
   const {
     editingData,
-    hasUnsaved,
     handleFieldChange,
     handleSave,
     handleDelete,
     unsavedChanges,
-    isSaving,
-    isDeleting,
   } = useUpdateMethod({
     data,
     onUpdateSuccess: () => {},
