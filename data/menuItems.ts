@@ -95,6 +95,6 @@ export const menuItems: MenuItem[] = [
     id: "settings",
     label: "Settings",
     icon: Settings,
-    href: "/settings",
+    href: "/dashboard/settings",
   },
 ];
