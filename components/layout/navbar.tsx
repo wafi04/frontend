@@ -10,6 +10,10 @@ import {
   ShoppingBag,
   ReceiptText,
   TrendingUp,
+  Target,
+  Crown,
+  Star,
+  ChevronDown,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
@@ -17,12 +21,33 @@ import { useState } from "react";
 export function Navbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
 
   const navItems = [
     { label: "TopUp", href: "/", icon: ShoppingBag },
     { label: "Cek Transaksi", href: "/cek-transaksi", icon: ReceiptText },
     { label: "Leaderboard", href: "/leaderboard", icon: TrendingUp },
-    { label: "Kalkulator", href: "/kalkulator", icon: Calculator },
+  ];
+
+  const calculatorOptions = [
+    { 
+      label: "Winrate Calculator", 
+      href: "/calculator/winrate", 
+      icon: Target,
+      description: "Hitung winrate yang dibutuhkan untuk mencapai rank"
+    },
+    { 
+      label: "Magic Wheel Calculator", 
+      href: "/calculator/magicwheel", 
+      icon: Crown,
+      description: "Kalkulasi point dan rank Magic Wheel"
+    },
+    { 
+      label: "Zodiac Calculator", 
+      href: "/calculator/zodiac", 
+      icon: Star,
+      description: "Hitung kombinasi dan efek zodiac"
+    },
   ];
 
   // Fixed Framer Motion variants
@@ -68,6 +93,32 @@ export function Navbar() {
     },
   };
 
+  const popoverVariants = {
+    hidden: {
+      opacity: 0,
+      y: -10,
+      scale: 0.95,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        type: "spring" as const,
+        stiffness: 200,
+        damping: 20,
+      },
+    },
+    exit: {
+      opacity: 0,
+      y: -10,
+      scale: 0.95,
+      transition: {
+        duration: 0.2,
+      },
+    },
+  };
+
   return (
     <header className="sticky top-0 z-40 w-full bg-secondary/80 backdrop-blur-md duration-500 ease-in-out print:hidden">
       <div className="border-b">
@@ -80,14 +131,14 @@ export function Navbar() {
           >
             <Link href="/id-id" className="outline-none">
               <span className="sr-only"> Logo</span>
-              {/* <Image
+              <Image
                 alt="OURASTORE Logo"
                 width={1000}
                 height={1000}
                 className="h-9 w-auto lg:h-10 transition-all duration-200"
                 style={{ color: "transparent" }}
                 src="https://cdn.ourastore.com/ourastore.com/meta/ourastorelogo.png"
-              /> */}
+              />
             </Link>
           </motion.div>
 
@@ -173,7 +224,7 @@ export function Navbar() {
       </AnimatePresence>
 
       {/* Desktop Navigation */}
-      <nav className="container hidden h-12 w-full items-center justify-between border-b s md:flex">
+      <nav className="container hidden h-12 w-full items-center justify-between border-b md:flex">
         <motion.div
           className="flex h-full items-center gap-6"
           initial="hidden"
@@ -218,6 +269,93 @@ export function Navbar() {
               </motion.div>
             );
           })}
+          
+          {/* Calculator Dropdown */}
+          <motion.div variants={itemVariants} className="relative">
+            <motion.div
+              initial="rest"
+              whileHover="hover"
+              className="relative h-full"
+            >
+              <button
+                className="relative inline-flex h-12 items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
+                onClick={() => setIsCalculatorOpen(!isCalculatorOpen)}
+                onMouseEnter={() => setIsCalculatorOpen(true)}
+                onMouseLeave={() => setIsCalculatorOpen(false)}
+              >
+                <motion.div variants={iconVariants}>
+                  <Calculator size={18} />
+                </motion.div>
+                <span>Kalkulator</span>
+                <motion.div
+                  animate={{ rotate: isCalculatorOpen ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <ChevronDown size={14} />
+                </motion.div>
+              </button>
+
+              <motion.div
+                className="absolute inset-x-0 bottom-0 h-[2px] bg-primary origin-left"
+                variants={underlineVariants}
+              />
+            </motion.div>
+
+            {/* Calculator Popover */}
+            <AnimatePresence>
+              {isCalculatorOpen && (
+                <motion.div
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  variants={popoverVariants}
+                  className="absolute left-0 top-full mt-2 w-80 rounded-lg border border-border/20 bg-background/95 backdrop-blur-md shadow-lg"
+                  onMouseEnter={() => setIsCalculatorOpen(true)}
+                  onMouseLeave={() => setIsCalculatorOpen(false)}
+                >
+                  <div className="p-2">
+                    {calculatorOptions.map((option, index) => {
+                      const IconComponent = option.icon;
+                      
+                      return (
+                        <motion.div
+                          key={option.label}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ 
+                            opacity: 1, 
+                            y: 0,
+                            transition: { delay: index * 0.1 }
+                          }}
+                        >
+                          <Link
+                            href={option.href}
+                            className="flex items-start gap-3 rounded-md p-3 text-sm hover:bg-accent/50 transition-colors duration-200 group"
+                            onClick={() => setIsCalculatorOpen(false)}
+                          >
+                            <motion.div 
+                              className="mt-0.5 text-primary"
+                              whileHover={{ scale: 1.1, rotate: 5 }}
+                              transition={{ duration: 0.2 }}
+                            >
+                              <IconComponent size={18} />
+                            </motion.div>
+                            <div className="flex-1 space-y-1">
+                              <div className="font-medium text-foreground group-hover:text-primary transition-colors duration-200">
+                                {option.label}
+                              </div>
+                              <div className="text-xs text-muted-foreground leading-relaxed">
+                                {option.description}
+                              </div>
+                            </div>
+                          </Link>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
         </motion.div>
       </nav>
 
@@ -230,7 +368,7 @@ export function Navbar() {
             exit={{ opacity: 0, height: 0 }}
             className="md:hidden border-b border-border/20 bg-secondary/95 backdrop-blur-md"
           >
-            <div className="container ">
+            <div className="container py-4">
               <div className="flex flex-col gap-2">
                 {navItems.map((item, index) => {
                   const IconComponent = item.icon;
@@ -258,6 +396,41 @@ export function Navbar() {
                     </motion.div>
                   );
                 })}
+
+                {/* Mobile Calculator Section */}
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: navItems.length * 0.1 }}
+                  className="mt-2"
+                >
+                  <div className="px-3 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                    Kalkulator
+                  </div>
+                  <div className="space-y-1">
+                    {calculatorOptions.map((option, index) => {
+                      const IconComponent = option.icon;
+                      
+                      return (
+                        <motion.div
+                          key={option.label}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: (navItems.length + index + 1) * 0.1 }}
+                        >
+                          <Link
+                            href={option.href}
+                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-accent/50 hover:text-foreground transition-colors duration-200"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                          >
+                            <IconComponent size={18} />
+                            <span>{option.label}</span>
+                          </Link>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                </motion.div>
               </div>
             </div>
           </motion.nav>

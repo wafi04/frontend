@@ -156,7 +156,7 @@ export function FormDepositContent() {
         <Label className="text-lg font-semibold text-foreground">
           Pilih Jenis Pembayaran
         </Label>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {data?.data.map((typeGroup) => (
             <Button
               key={typeGroup.type}
