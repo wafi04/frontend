@@ -33,6 +33,7 @@ export function useGetAllCategoryActive() {
     queryKey: ["categories"],
     queryFn: async () => {
       const data = await api.get<API_RESPONSE<Category[]>>(`/category/all`);
+      console.log(data.data)
       return data.data;
     },
     staleTime: 5 * 6000,

@@ -7,6 +7,7 @@ import { ProductDataCard } from "@/shared/components/order/productCard";
 import { MethodSection } from "@/shared/components/order/method";
 import { Reveiews } from "@/shared/components/order/reviews";
 import ContactPerson from "@/shared/components/order/contactPerson";
+import { Cart } from "@/shared/components/order/cart";
 
 export default function Order() {
   const { data } = useGetSubCategoryBySubName("moonton");
@@ -43,7 +44,7 @@ export default function Order() {
                 <ContactPerson />
               </div>
               {/* reviews */}
-              <Reveiews />
+              <Reveiews img={data?.data.subCategoryThumbnail}/>
             </form>
           </div>
         </div>

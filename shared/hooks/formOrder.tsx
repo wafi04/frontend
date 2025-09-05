@@ -98,7 +98,6 @@ export function useOrder(): UseOrderReturn {
 
       alert("Order berhasil disubmit!");
     } catch (error) {
-      console.error("Order submission failed:", error);
       form.setError("root", {
         message: error instanceof Error ? error.message : "Terjadi kesalahan",
       });

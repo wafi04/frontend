@@ -2,6 +2,7 @@ import { FilterRequest } from "@/features/product/hooks/api";
 import { api } from "@/lib/axios";
 import { API_RESPONSE, ApiPagination } from "@/shared/types/response";
 import {
+  CreateSubCategory,
   SubCategory,
   SubCategoryWithProducts,
 } from "@/shared/types/subcategory";
@@ -130,4 +131,27 @@ export function useDeleteSubCategoryMutation() {
       });
     },
   });
+}
+
+
+export function useCreateSubCategory(){
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationKey : ["create-sub-category"],
+    mutationFn : async (data : CreateSubCategory)  => {
+      const validateData = {
+        ...data,
+        categoryType : parseInt(data.categoryType)
+      }
+      const req = await api.post("/subcategory",validateData)
+      return req.data
+    },
+     onSuccess: (data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["subcategories"] });
+      queryClient.invalidateQueries({ queryKey: ["subcategory", variables] });
+      queryClient.invalidateQueries({
+        queryKey: ["subcategories", "category"],
+      });
+    },
+  })
 }

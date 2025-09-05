@@ -18,6 +18,7 @@ export interface CategoryCreate {
   icon: string;
   type: CategoryType;
   is_active: boolean;
+  
 }
 
 export interface CategoryUpdate {

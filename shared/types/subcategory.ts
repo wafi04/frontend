@@ -29,3 +29,17 @@ export interface SubCategoryWithProducts {
     typeName: string;
   }[];
 }
+
+
+export interface CreateSubCategory {
+  name : string
+subName : string
+brand : string
+categoryType : string
+	thumbnail : string
+	bannerUrl : string
+isActive : boolean
+instruction : string
+information : string
+isCheckNickname : boolean
+}

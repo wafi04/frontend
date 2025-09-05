@@ -5,6 +5,7 @@ import { FilterDashboard } from "@/shared/components/filterheader/filter";
 import { useFilterGetAllCategory } from "@/features/category/hooks/useFilterCategory";
 import { useFilterGetAllSubCategories } from "../hooks/useFilterGetAll";
 import { PaginationComponents } from "@/components/layout/pagination";
+import { DialogCreateSubCategory } from "../components/formSubCategory";
 
 export default function DashboardSubCategory() {
   const {
@@ -24,12 +25,16 @@ export default function DashboardSubCategory() {
         title="Manage Sub Categories"
         description="Manage Sub Category Information"
       >
+        <div className="flex gap-4">
+
         <FilterDashboard
           currentLimit={currentLimit}
           searchTerm={searchTerm}
           setCurrentLimit={setCurrentLimit}
           setSearchTerm={setSearchTerm}
-        />
+          />
+          <DialogCreateSubCategory />
+          </div>
       </HeaderDashboard>
       {data?.data && <TableSubCategories data={data?.data.data} />}
       {data?.data.meta && (

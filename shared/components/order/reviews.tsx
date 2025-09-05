@@ -1,4 +1,6 @@
-export function Reveiews() {
+import { Cart } from "./cart";
+
+export function Reveiews({img}  : {img? :string}) {
   return (
     <div className="sticky top-[118px] flex flex-col gap-4 md:gap-8">
       <div className="flex w-full flex-col gap-4">
@@ -147,6 +149,7 @@ export function Reveiews() {
           </button>
         </div>
       </div>
+      <Cart img={img}/>
     </div>
   );
 }
