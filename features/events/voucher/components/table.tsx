@@ -82,15 +82,21 @@ export function TableVouchers({ data }: { data: VoucherData[] }) {
                 {voucher.type}
               </TableCell>
 
-              {voucher.type === "PERCENTAGE" ? (
-                <TableCell className="border-r border-b border-gray-800">
-                  {voucher.percentage ?? "-"}%
-                </TableCell>
-              ) : (
-                <TableCell className="border-r border-b border-gray-800">
-                  Rp {voucher.amount.toLocaleString("id-ID")}
-                </TableCell>
-              )}
+              <TableCell className="border-r border-b border-gray-800">
+                {voucher.type === "PERCENTAGE" && (
+                  <span>{voucher.percentage ?? "-"}%</span>
+                )}
+                {voucher.type === "FIXED" && (
+                  <span>Rp {voucher.amount.toLocaleString("id-ID")}</span>
+                )}
+                {voucher.type === "HYBRID" && (
+                  <>
+                    <span>{voucher.percentage ?? "-"}%</span>
+                    {" + "}
+                    <span>Rp {voucher.amount.toLocaleString("id-ID")}</span>
+                  </>
+                )}
+              </TableCell>
 
               <TableCell className="border-r border-b border-gray-800">
                 Rp {voucher.maxDiscount.toLocaleString("id-ID")}

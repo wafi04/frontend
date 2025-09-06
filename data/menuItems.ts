@@ -44,7 +44,6 @@ export const menuItems: MenuItem[] = [
     subItems: [
       { label: "All Transacion", href: "/dashboard/transactions" },
       { label: "Manual Transaction", href: "/dashboard/transactions/manual" },
-      { label: "Deposit", href: "/dashboard/transactions/deposit" },
     ],
   },
   {
@@ -79,12 +78,6 @@ export const menuItems: MenuItem[] = [
       { label: "Flash Sale", href: "/dashboard/flash-sales" },
       { label: "Voucher", href: "/dashboard/voucher" },
     ],
-  },
-  {
-    id: "inbox",
-    label: "Inbox",
-    icon: Inbox,
-    href: "/inbox",
   },
   {
     id: "method",

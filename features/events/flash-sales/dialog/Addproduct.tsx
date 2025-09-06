@@ -1,4 +1,9 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { useGetAllSearchProduct } from "@/features/product/hooks/api";
 import { ChangeEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { Search, Plus, Package, X } from "lucide-react";
@@ -6,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { FormatCurrency } from "@/utils/format";
 import { Button } from "@/components/ui/button";
 import debounce from "lodash.debounce";
+import { useCreateProductFlashSale } from "../api/api";
 
 interface Product {
   hargaModal: number;
@@ -22,11 +28,16 @@ interface ProductFlashSaleProps {
   flashSaleId?: number;
 }
 
-export function ProductFlashSale({ isOpen, onClose, onSelectProduct, flashSaleId }: ProductFlashSaleProps) {
+export function ProductFlashSale({
+  isOpen,
+  onClose,
+  onSelectProduct,
+  flashSaleId,
+}: ProductFlashSaleProps) {
   const [search, setSearch] = useState<string>("");
-  const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
+  const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
   const [isSaving, setIsSaving] = useState(false);
-
+  const { mutate } = useCreateProductFlashSale();
   /* ── Reset state saat modal dibuka / ditutup ── */
   useEffect(() => {
     if (!isOpen) {
@@ -50,30 +61,31 @@ export function ProductFlashSale({ isOpen, onClose, onSelectProduct, flashSaleId
   );
 
   /* ── API call ── */
-  const { data, isLoading, error } = useGetAllSearchProduct(search || undefined);
-
-  /* ── Handlers ── */
-  const handleAddProduct = useCallback(
-    (product: Product) => {
-      setSelectedProducts((prev) => {
-        if (prev.find((p) => p.id === product.id)) return prev;
-        const updated = [...prev, product];
-        onSelectProduct?.(product);
-        return updated;
-      });
-    },
-    [onSelectProduct]
+  const { data, isLoading, error } = useGetAllSearchProduct(
+    search || undefined
   );
 
+  /* ── Handlers ── */
+  const handleAddProduct = useCallback((productId: number) => {
+    setSelectedProducts((prev) => {
+      if (prev.includes(productId)) return prev; // jangan duplikat
+      return [...prev, productId];
+    });
+  }, []);
+
   const handleRemoveProduct = useCallback((productId: number) => {
-    setSelectedProducts((prev) => prev.filter((p) => p.id !== productId));
+    setSelectedProducts((prev) => prev.filter((id) => id !== productId));
   }, []);
 
   const handleSave = useCallback(async () => {
     if (selectedProducts.length === 0) return;
     setIsSaving(true);
     try {
-      console.log("Saving products to flash sale:", flashSaleId, selectedProducts);
+      mutate({
+        flashSaleId: flashSaleId as number,
+        productIds: selectedProducts, // langsung array of id
+      });
+
       onClose();
     } finally {
       setIsSaving(false);
@@ -103,34 +115,28 @@ export function ProductFlashSale({ isOpen, onClose, onSelectProduct, flashSaleId
           />
         </div>
 
-        {/* Selected products */}
-        {selectedProducts.length > 0 && (
-          <section aria-label="Produk terpilih" className="rounded-lg p-3 border">
-            <p className="text-sm font-medium mb-2">
-              Produk Terpilih: {selectedProducts.length}
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {selectedProducts.map((product) => (
-                <div
-                  key={product.id}
-                  className="flex items-center bg-secondary border border-primary gap-2 px-3 py-1 rounded-md text-sm"
-                >
-                  <span className="truncate max-w-32" title={product.productCode}>
-                    {product.productCode}
-                  </span>
-                  <button
-                    type="button"
-                    aria-label={`Hapus ${product.productCode}`}
-                    onClick={() => handleRemoveProduct(product.id)}
-                    className="text-red-500 hover:text-red-700 transition-colors"
-                  >
-                    <X className="w-3 h-3" />
-                  </button>
-                </div>
-              ))}
+        {selectedProducts.map((id) => {
+          const product = data?.data?.find((p: Product) => p.id === id);
+          if (!product) return null;
+          return (
+            <div
+              key={id}
+              className="flex items-center bg-secondary border border-primary gap-2 px-3 py-1 rounded-md text-sm"
+            >
+              <span className="truncate max-w-32" title={product.productCode}>
+                {product.productCode}
+              </span>
+              <button
+                type="button"
+                aria-label={`Hapus ${product.productCode}`}
+                onClick={() => handleRemoveProduct(id)}
+                className="text-red-500 hover:text-red-700 transition-colors"
+              >
+                <X className="w-3 h-3" />
+              </button>
             </div>
-          </section>
-        )}
+          );
+        })}
 
         {/* Product list */}
         <section
@@ -149,11 +155,15 @@ export function ProductFlashSale({ isOpen, onClose, onSelectProduct, flashSaleId
               </div>
             ) : error ? (
               <div className="flex flex-col items-center justify-center py-12">
-                <span className="text-sm text-red-600">Gagal memuat produk</span>
+                <span className="text-sm text-red-600">
+                  Gagal memuat produk
+                </span>
               </div>
             ) : data?.data?.length ? (
               data.data.map((product: Product) => {
-                const isSelected = selectedProducts.some((p) => p.id === product.id);
+                const isSelected = selectedProducts.some(
+                  (p) => p === product.id
+                );
                 return (
                   <article
                     key={product.productCode}
@@ -164,19 +174,30 @@ export function ProductFlashSale({ isOpen, onClose, onSelectProduct, flashSaleId
                         <Package className="w-5 h-5 text-gray-400" />
                       </div>
                       <div>
-                        <h4 className="font-medium truncate max-w-60" title={product.product_name}>
+                        <h4
+                          className="font-medium truncate max-w-60"
+                          title={product.product_name}
+                        >
                           {product.product_name}
                         </h4>
-                        <p className="text-sm text-gray-600">{FormatCurrency(product.hargaModal)}</p>
-                        <p className="text-xs text-gray-500">Kode: {product.productCode}</p>
+                        <p className="text-sm text-gray-600">
+                          {FormatCurrency(product.hargaModal)}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          Kode: {product.productCode}
+                        </p>
                       </div>
                     </div>
 
                     <Button
                       size="sm"
-                      onClick={() => handleAddProduct(product)}
+                      onClick={() => handleAddProduct(product.id)}
                       disabled={isSelected}
-                      aria-label={isSelected ? "Sudah dipilih" : `Pilih ${product.product_name}`}
+                      aria-label={
+                        isSelected
+                          ? "Sudah dipilih"
+                          : `Pilih ${product.product_name}`
+                      }
                     >
                       {isSelected ? (
                         "✓ Dipilih"
@@ -194,7 +215,9 @@ export function ProductFlashSale({ isOpen, onClose, onSelectProduct, flashSaleId
               <div className="flex flex-col items-center justify-center py-12">
                 <Package className="w-12 h-12 mb-3 text-gray-300" />
                 <span className="text-sm text-gray-500">
-                  {search ? `Tidak ada produk dengan kata kunci "${search}"` : "Tidak ada produk"}
+                  {search
+                    ? `Tidak ada produk dengan kata kunci "${search}"`
+                    : "Tidak ada produk"}
                 </span>
               </div>
             )}
@@ -203,12 +226,17 @@ export function ProductFlashSale({ isOpen, onClose, onSelectProduct, flashSaleId
 
         {/* Action buttons */}
         <footer className="flex justify-between items-center pt-4 border-t">
-          <p className="text-sm text-gray-600">{selectedProducts.length} produk dipilih</p>
+          <p className="text-sm text-gray-600">
+            {selectedProducts.length} produk dipilih
+          </p>
           <div className="flex gap-3">
             <Button variant="ghost" onClick={onClose} disabled={isSaving}>
               Batal
             </Button>
-            <Button onClick={handleSave} disabled={selectedProducts.length === 0 || isSaving}>
+            <Button
+              onClick={handleSave}
+              disabled={selectedProducts.length === 0 || isSaving}
+            >
               {isSaving ? "Menyimpan..." : "Simpan"}
             </Button>
           </div>

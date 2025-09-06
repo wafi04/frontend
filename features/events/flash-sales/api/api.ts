@@ -37,7 +37,23 @@ export function useCreateFlashSale() {
     },
   });
 }
+export function useCreateProductFlashSale() {
+  const queryClient = useQueryClient();
 
+  return useMutation({
+    mutationFn: async (data: { flashSaleId: number; productIds: number[] }) => {
+      const response = await api.post("/pfs", data);
+      return response.data;
+    },
+    onSuccess: () => {
+      // Invalidate dan refetch flashsales list setelah create berhasil
+      queryClient.invalidateQueries({ queryKey: ["flash-sales"] });
+      queryClient.invalidateQueries({
+        queryKey: ["flash-sales-active"],
+      });
+    },
+  });
+}
 export function useDeleteflashsale() {
   const queryClient = useQueryClient();
 

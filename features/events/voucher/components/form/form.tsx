@@ -22,20 +22,20 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { Calendar } from "@/components/ui/calendar";
-import { CalendarIcon, Loader2 } from "lucide-react";
-import { format } from "date-fns";
-import { cn } from "@/lib/utils";
+import { Loader2, Info } from "lucide-react";
 import { useCreateVoucher, useUpdateVoucher } from "../../api/api";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
-// Schema validation dengan Zod
+// Schema validation dengan Zod - Updated untuk mendukung multiple discount types
 const voucherSchema = z
   .object({
     code: z
       .string()
       .min(1, "Code is required")
       .max(50, "Code max 50 characters"),
-    type: z.string(),
+    type: z.enum(["FIXED", "PERCENTAGE", "HYBRID"], {
+      message: "Please select a voucher type",
+    }),
     title: z
       .string()
       .min(1, "Title is required")
@@ -67,21 +67,35 @@ const voucherSchema = z
     validUntil: z.string().min(1, "Valid until date is required"),
     isActive: z.boolean().default(true),
   })
-
   .refine(
     (data) => {
-      // Validate single value constraint
+      // Validate based on voucher type
       if (data.type === "FIXED") {
         return data.amount > 0;
       } else if (data.type === "PERCENTAGE") {
         return data.percentage > 0;
+      } else if (data.type === "HYBRID") {
+        // For hybrid, at least one must be greater than 0
+        return data.amount > 0 || data.percentage > 0;
       }
       return true;
     },
     {
-      message:
-        "Amount must be greater than 0 for FIXED type, Percentage must be greater than 0 for PERCENTAGE type",
-      path: ["amount", "percentage"],
+      message: "Invalid discount configuration for selected type",
+      path: ["type"],
+    }
+  )
+  .refine(
+    (data) => {
+      // Validate dates
+      if (data.validFrom && data.validUntil) {
+        return new Date(data.validFrom) < new Date(data.validUntil);
+      }
+      return true;
+    },
+    {
+      message: "Valid from date must be before valid until date",
+      path: ["validUntil"],
     }
   );
 
@@ -96,6 +110,7 @@ export function VoucherForm({
 }) {
   const { mutate, isPending } = useCreateVoucher();
   const { mutate: updateMutate, isPending: updatePending } = useUpdateVoucher();
+
   const form = useForm<VoucherFormData>({
     defaultValues: {
       code: initialData?.code ?? "",
@@ -103,7 +118,7 @@ export function VoucherForm({
       title: initialData?.title ?? "",
       description: initialData?.description ?? "",
       amount: initialData?.amount ?? 0,
-      percentage: initialData?.percentage ?? 1,
+      percentage: initialData?.percentage ?? 0,
       maxDiscount: initialData?.maxDiscount ?? 0,
       minCartValue: initialData?.minCartValue ?? 0,
       issuedQty: initialData?.issuedQty ?? 1,
@@ -117,18 +132,54 @@ export function VoucherForm({
   });
 
   const watchType = form.watch("type");
+  const watchAmount = form.watch("amount");
+  const watchPercentage = form.watch("percentage");
 
   const onSubmit = (data: VoucherFormData) => {
+    // Clean up data based on type to avoid backend validation issues
+    const cleanedData = { ...data };
+
+    if (data.type === "FIXED") {
+      cleanedData.percentage = 0;
+      cleanedData.maxDiscount = 0;
+    } else if (data.type === "PERCENTAGE") {
+      cleanedData.amount = 0;
+    }
+
     if (initialData && Id) {
       updateMutate({
-        ...data,
+        ...cleanedData,
         id: Id,
       });
     } else {
-      mutate(data);
+      mutate(cleanedData);
     }
   };
+
   const isLoading = isPending || updatePending;
+
+  const renderDiscountInfo = () => {
+    if (watchType === "HYBRID") {
+      return (
+        <Alert className="md:col-span-4">
+          <Info className="h-4 w-4" />
+          <AlertDescription>
+            <strong>Hybrid Mode:</strong> This voucher can apply both fixed
+            amount and percentage discounts. The system will calculate both and
+            apply the better discount for the customer.
+            {watchAmount > 0 && watchPercentage > 0 && (
+              <span className="block mt-1 text-sm text-muted-foreground">
+                Current: Fixed ₹{watchAmount} OR {watchPercentage}% (whichever
+                is better)
+              </span>
+            )}
+          </AlertDescription>
+        </Alert>
+      );
+    }
+    return null;
+  };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -151,7 +202,7 @@ export function VoucherForm({
             )}
           />
 
-          {/* Type */}
+          {/* Title */}
           <FormField
             control={form.control}
             name="title"
@@ -166,6 +217,7 @@ export function VoucherForm({
             )}
           />
 
+          {/* Description */}
           <FormField
             control={form.control}
             name="description"
@@ -183,42 +235,14 @@ export function VoucherForm({
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="validFrom"
-            render={({ field }) => (
-              <FormItem className="md:col-span-2">
-                <FormLabel>Valid From</FormLabel>
-                <FormControl>
-                  <Input type="datetime-local" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
 
-          {/* Valid Until */}
-          <FormField
-            control={form.control}
-            name="validUntil"
-            render={({ field }) => (
-              <FormItem className="md:col-span-2">
-                <FormLabel>Valid Until</FormLabel>
-                <FormControl>
-                  <Input type="datetime-local" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* Title */}
+          {/* Type Selection */}
           <FormField
             control={form.control}
             name="type"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Type</FormLabel>
+              <FormItem className="md:col-span-2">
+                <FormLabel>Discount Type</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -229,25 +253,42 @@ export function VoucherForm({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="FIXED">Fixed Amount</SelectItem>
-                    <SelectItem value="PERCENTAGE">Percentage</SelectItem>
+                    <SelectItem value="FIXED">Fixed Amount Only</SelectItem>
+                    <SelectItem value="PERCENTAGE">Percentage Only</SelectItem>
+                    <SelectItem value="HYBRID">
+                      Hybrid (Best of Both)
+                    </SelectItem>
                   </SelectContent>
                 </Select>
+                <FormDescription>
+                  {watchType === "FIXED" &&
+                    "Customer gets fixed amount discount"}
+                  {watchType === "PERCENTAGE" &&
+                    "Customer gets percentage discount"}
+                  {watchType === "HYBRID" &&
+                    "System picks the better discount option"}
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          {/* Description */}
+          {/* Discount Info Alert */}
+          {renderDiscountInfo()}
 
-          {/* Amount (show only if type is FIXED) */}
-          {watchType === "FIXED" && (
+          {/* Amount (show for FIXED and HYBRID) */}
+          {(watchType === "FIXED" || watchType === "HYBRID") && (
             <FormField
               control={form.control}
               name="amount"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Fixed Amount</FormLabel>
+                  <FormLabel>
+                    Fixed Amount
+                    {watchType === "HYBRID" && (
+                      <span className="text-muted-foreground"> (Optional)</span>
+                    )}
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="number"
@@ -263,19 +304,23 @@ export function VoucherForm({
             />
           )}
 
-          {/* Percentage (show only if type is PERCENTAGE) */}
-          {watchType === "PERCENTAGE" && (
+          {/* Percentage (show for PERCENTAGE and HYBRID) */}
+          {(watchType === "PERCENTAGE" || watchType === "HYBRID") && (
             <FormField
               control={form.control}
               name="percentage"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Percentage</FormLabel>
+                  <FormLabel>
+                    Percentage
+                    {watchType === "HYBRID" && (
+                      <span className="text-muted-foreground"> (Optional)</span>
+                    )}
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="number"
                       placeholder="10"
-                      min="0"
                       max="100"
                       {...field}
                       onChange={(e) => field.onChange(Number(e.target.value))}
@@ -290,8 +335,9 @@ export function VoucherForm({
             />
           )}
 
-          {/* Max Discount (show only if type is PERCENTAGE) */}
-          {watchType === "PERCENTAGE" && (
+          {/* Max Discount (show for PERCENTAGE and HYBRID when percentage > 0) */}
+          {(watchType === "PERCENTAGE" ||
+            (watchType === "HYBRID" && watchPercentage > 0)) && (
             <FormField
               control={form.control}
               name="maxDiscount"
@@ -333,6 +379,36 @@ export function VoucherForm({
                 <FormDescription>
                   Minimum cart value to use this voucher
                 </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* Valid From */}
+          <FormField
+            control={form.control}
+            name="validFrom"
+            render={({ field }) => (
+              <FormItem className="md:col-span-2">
+                <FormLabel>Valid From</FormLabel>
+                <FormControl>
+                  <Input type="datetime-local" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* Valid Until */}
+          <FormField
+            control={form.control}
+            name="validUntil"
+            render={({ field }) => (
+              <FormItem className="md:col-span-2">
+                <FormLabel>Valid Until</FormLabel>
+                <FormControl>
+                  <Input type="datetime-local" {...field} />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
@@ -391,13 +467,10 @@ export function VoucherForm({
                 <FormLabel>Usage Per User</FormLabel>
                 <FormControl>
                   <Input
-                    type="text"
+                    type="number"
+                    min="1"
                     {...field}
-                    onChange={(e) => {
-                      // Hanya izinkan angka
-                      const value = e.target.value.replace(/\D/g, "");
-                      field.onChange(value ? Number(value) : "");
-                    }}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
                   />
                 </FormControl>
                 <FormDescription>
@@ -407,8 +480,6 @@ export function VoucherForm({
               </FormItem>
             )}
           />
-
-          {/* Valid From */}
 
           {/* Is Active */}
           <FormField

@@ -20,7 +20,7 @@ export interface CreateVoucherRequest {
 export interface VoucherData {
   id: number;
   code: string;
-  type: string;
+  type: "FIXED" | "PERCENTAGE" | "HYBRID";
   title: string;
   description?: string;
   amount: number;
