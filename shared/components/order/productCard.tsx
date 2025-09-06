@@ -4,7 +4,6 @@ import { useState } from "react";
 import { ProductOrder } from "@/shared/types/subcategory";
 import { FormatCurrency } from "@/utils/format";
 import { useOrder } from "@/shared/hooks/formOrder";
-import { useProductAndMethod } from "@/shared/hooks/useSelectProductAndMethod";
 
 export function ProductDataCard({
   productData,
@@ -19,8 +18,13 @@ export function ProductDataCard({
     null
   );
 
-  const { form } = useOrder();
-  const { setProductPrice } = useProductAndMethod();
+  const {
+    formData,
+    productPrice,
+    setProductCode,
+    setFormData,
+    setProductPrice,
+  } = useOrder();
 
   const typeNames = Array.from(new Set(productData.map((d) => d.typeName)));
 
@@ -99,8 +103,11 @@ export function ProductDataCard({
                   key={p.productCode}
                   onClick={() => {
                     setSelectedProduct(p);
+                    setProductCode(p.productCode);
                     setProductPrice(p.productPrice);
-                    form.setValue("productCode", p.productCode);
+                    setFormData({
+                      productCode: p.productCode,
+                    });
                   }}
                   className={`group relative cursor-pointer overflow-hidden rounded-2xl border bg-gradient-to-br from-background to-background/80 shadow-lg transition-all duration-500 hover:scale-[1.03] hover:border-primary/60 hover:shadow-2xl hover:-translate-y-1 ${
                     selectedProduct?.productCode === p.productCode
