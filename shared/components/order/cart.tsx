@@ -1,4 +1,5 @@
 import { useProductAndMethod } from "@/shared/hooks/useSelectProductAndMethod";
+import { FormatCurrency } from "@/utils/format";
 import Image from "next/image";
 
 interface CartProps {
@@ -10,15 +11,7 @@ interface CartProps {
 export function Cart({ img, productName, productDescription }: CartProps) {
   const { productPrice } = useProductAndMethod();
 
-  // Format price to Indonesian Rupiah
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(price);
-  };
+
 
   return (
     <div className="hidden space-y-4 lg:block">
@@ -62,7 +55,7 @@ export function Cart({ img, productName, productDescription }: CartProps) {
               <div className="flex items-center justify-between border-t pt-2">
                 <div className="text-sm font-medium">Harga</div>
                 <div className="text-sm font-semibold">
-                  {formatPrice(productPrice)}
+                  {FormatCurrency(productPrice)}
                 </div>
               </div>
             </div>
