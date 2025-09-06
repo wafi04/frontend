@@ -66,6 +66,7 @@ export const menuItems: MenuItem[] = [
     subItems: [
       { label: "Kategori", href: "/dashboard/category" },
       { label: "Produk", href: "/dashboard/product" },
+      { label: "Form Fields", href: "/dashboard/form-fields" },
       { label: "Sub Kategori", href: "/dashboard/subcategory" },
     ],
   },

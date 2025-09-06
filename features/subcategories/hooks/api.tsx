@@ -63,6 +63,7 @@ export function useGetSubCategoryBySubName(code: string) {
     },
     staleTime: 60000,
     gcTime: 60000,
+    
     enabled: !!code,
   });
 

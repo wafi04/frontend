@@ -19,8 +19,6 @@ export function ProductDataCard({
   );
 
   const {
-    formData,
-    productPrice,
     setProductCode,
     setFormData,
     setProductPrice,
@@ -35,17 +33,13 @@ export function ProductDataCard({
   return (
     <section className="relative scroll-mt-20 rounded-2xl bg-gradient-to-br from-card/80 to-card/40 shadow-2xl backdrop-blur-md border border-border/50 md:scroll-mt-[7.5rem]">
       {/* Header */}
-      <div className="flex items-center overflow-hidden rounded-t-2xl bg-gradient-to-r from-primary via-primary/95 to-primary/90 backdrop-blur-sm relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-        <div className="relative flex h-12 w-12 items-center justify-center bg-gradient-to-br from-primary-foreground/20 to-primary-foreground/10 backdrop-blur-sm font-bold text-primary-foreground text-lg border-r border-primary-foreground/20">
+        <div className="flex items-center overflow-hidden rounded-t-xl bg-card">
+        <div className="flex h-10 w-10 items-center justify-center bg-primary font-semibold text-primary-foreground">
           2
         </div>
-        <div className="relative flex items-center gap-2 px-4 py-3">
-          <div className="h-2 w-2 rounded-full bg-primary-foreground/60 animate-pulse" />
-          <h2 className="text-sm font-bold text-primary-foreground tracking-wide">
-            Pilih Nominal
-          </h2>
-        </div>
+        <h2 className="px-4 py-2 text-sm/6 font-semibold text-card-foreground">
+          Pilih Produk
+        </h2>
       </div>
 
       {/* Filter */}
@@ -131,9 +125,6 @@ export function ProductDataCard({
                       </div>
                     </div>
                   </div>
-
-                  {/* Hover glow */}
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary/10 via-transparent to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                 </div>
               ))}
             </div>

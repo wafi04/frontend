@@ -10,7 +10,7 @@ function SubCategoryCard({ item }: { item: SubCategory }) {
       key={item.id}
       className="relative outline-none opacity-100 transform-none"
       tabIndex={0}
-      href={`/order/${item.subName.trim().toLowerCase()}`}
+      href={`/order/${item.brand.trim().toLowerCase()}`}
     >
       <div className="group relative transform overflow-hidden rounded-2xl bg-muted duration-300 ease-in-out hover:shadow-2xl hover:ring-2 hover:ring-primary hover:ring-offset-2 hover:ring-offset-background">
         <Image

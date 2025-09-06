@@ -20,6 +20,7 @@ export interface ProductOrder {
 }
 
 export interface SubCategoryWithProducts {
+  subCategoryId : number
   subCategoryName: string;
   subCategorySubName: string;
   subCategoryThumbnail: string;

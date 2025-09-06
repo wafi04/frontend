@@ -10,17 +10,34 @@ interface CartProps {
 }
 
 export function Cart({ img, productName, productDescription }: CartProps) {
-  const { productPrice } = useProductAndMethod();
+  const {
+    productPrice,
+    selectedMethod,
+    calculation,
+    gameId,
+    productCode,
+    isSubmitting,
+    submitOrder,
+    showDialog,
+    transactionResult,
+    closeDialog,
+    errors,
+  } = useOrder();
 
-  // Format price to Indonesian Rupiah
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(price);
+  const handleSubmit = () => {
+    submitOrder();
   };
+
+  const canSubmit =
+    gameId && productCode?.trim() && selectedMethod?.code && productPrice > 0;
+
+  console.log("Can submit check:", {
+    gameId: !!gameId,
+    productCode: !!productCode?.trim(),
+    methodCode: !!selectedMethod?.code,
+    productPrice: productPrice > 0,
+    canSubmit,
+  });
 
   return (
     <>
@@ -61,11 +78,37 @@ export function Cart({ img, productName, productDescription }: CartProps) {
                     </div>
                   </div>
 
-              {/* Price Section */}
-              <div className="flex items-center justify-between border-t pt-2">
-                <div className="text-sm font-medium">Harga</div>
-                <div className="text-sm font-semibold">
-                  {formatPrice(productPrice)}
+                  {/* Price Breakdown */}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between border-t pt-2">
+                      <div className="text-sm font-medium">Harga Produk</div>
+                      <div className="text-sm font-semibold">
+                        {FormatCurrency(calculation.productPrice)}
+                      </div>
+                    </div>
+
+                    {calculation.methodFee > 0 && (
+                      <div className="flex items-center justify-between">
+                        <div className="text-sm text-muted-foreground">
+                          Biaya Admin ({selectedMethod?.name})
+                        </div>
+                        <div className="text-sm">
+                          {FormatCurrency(calculation.methodFee)}
+                        </div>
+                      </div>
+                    )}
+
+                    {calculation.voucherDiscount > 0 && (
+                      <div className="flex items-center justify-between">
+                        <div className="text-sm text-green-600">
+                          Diskon Voucher
+                        </div>
+                        <div className="text-sm text-green-600">
+                          -{FormatCurrency(calculation.voucherDiscount)}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 <div
@@ -107,7 +150,9 @@ export function Cart({ img, productName, productDescription }: CartProps) {
             )}
           </div>
         </div>
-        {transactionResult && (
+        
+        {/* Dialog muncul SETELAH transaksi berhasil */}
+        {transactionResult && showDialog && (
           <DialogValidateTransactions
             isOpen={showDialog}
             onClose={closeDialog}

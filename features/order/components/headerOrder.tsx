@@ -1,16 +1,12 @@
 export function HeaderOrder({id,subName} : {id : number,subName : string}){
     return (
-        <div className="flex items-center overflow-hidden rounded-t-2xl bg-gradient-to-r from-primary via-primary/95 to-primary/90 backdrop-blur-sm relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-        <div className="relative flex h-12 w-12 items-center justify-center bg-gradient-to-br from-primary-foreground/20 to-primary-foreground/10 backdrop-blur-sm font-bold text-primary-foreground text-lg border-r border-primary-foreground/20">
+          <div className="flex items-center overflow-hidden rounded-t-xl bg-card">
+        <div className="flex h-10 w-10 items-center justify-center bg-primary font-semibold text-primary-foreground">
           {id}
         </div>
-        <div className="relative flex items-center gap-2 px-4 py-3">
-          <div className="h-2 w-2 rounded-full bg-primary-foreground/60 animate-pulse" />
-          <h2 className="text-sm font-bold text-primary-foreground tracking-wide">
-            {subName}
-          </h2>
-        </div>
+        <h2 className="px-4 py-2 text-sm/6 font-semibold text-card-foreground">
+        {subName}
+        </h2>
       </div>
 
     )
