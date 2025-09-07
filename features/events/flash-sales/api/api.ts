@@ -14,7 +14,7 @@ export function UseGetAllFlashSales() {
     gcTime: 5 * 6000,
   });
   return {
-    data,
+    data: data?.data || [],
     isLoading,
     error,
   };

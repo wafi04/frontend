@@ -10,16 +10,14 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { FormFlashSale } from "../components/form";
 import { useDeleteflashsale } from "../api/api";
-import { CreateFlashSaleRequest } from "@/shared/types/flash-sales";
 
 interface DialogFormProps {
   open: boolean;
   onOpen: () => void;
-  initialData?: CreateFlashSaleRequest;
   Id?: number;
 }
 
-export function DialogForm({ open, onOpen, initialData, Id }: DialogFormProps) {
+export function DialogForm({ open, onOpen, Id }: DialogFormProps) {
   return (
     <Dialog open={open} onOpenChange={() => onOpen()}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
@@ -30,7 +28,7 @@ export function DialogForm({ open, onOpen, initialData, Id }: DialogFormProps) {
             correct dates and discount values.
           </DialogDescription>
         </DialogHeader>
-        <FormFlashSale initialData={initialData} id={Id} />
+        <FormFlashSale id={Id} />
       </DialogContent>
     </Dialog>
   );

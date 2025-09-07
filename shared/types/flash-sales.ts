@@ -13,13 +13,21 @@ export interface FlashSale {
   usage_limit: number;
   usage_per_user: number;
 }
-export interface CreateFlashSaleRequest {
-  title: string;
-  description?: string;
-  start_at: string; // RFC3339
-  end_at: string
-  usage_limit?: number | null;
-  usage_per_user: number;
+export interface UpsertFlashSale {
+  title: string; // required
+  description?: string | null;
+  start_at: string; // required
+  end_at: string; // required
   is_active: boolean;
-  banner_url?: string | null;
+  products: UpsertFlashSaleProducts[];
+}
+
+export interface UpsertFlashSaleProducts {
+  productId: number;
+  originalPrice: number;
+  stockReserved: number;
+  stockSold: number;
+  flashSalePrice: number;
+  thumbnail: string;
+  usagePerUser: number;
 }

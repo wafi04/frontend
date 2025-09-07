@@ -6,7 +6,7 @@ import { DialogForm } from "../dialog/dialog";
 import { useState } from "react";
 
 export default function DashbordFlashSales() {
-  const { data } = UseGetAllFlashSales();
+  // const { data } = UseGetAllFlashSales();
   const [open, setOpen] = useState(false);
 
   return (
@@ -14,7 +14,7 @@ export default function DashbordFlashSales() {
       <HeaderDashboard>
         <Button onClick={() => setOpen(true)}>Create</Button>
       </HeaderDashboard>
-      {data?.data && <TableFlashSales data={data.data} />}
+
       {open && <DialogForm onOpen={() => setOpen(false)} open={open} />}
     </main>
   );

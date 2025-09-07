@@ -16,8 +16,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <ReactQueryProvider>
         <DashboardLayout>
           <Component {...pageProps} />
-                  <Toaster />
-
+          <Toaster />
         </DashboardLayout>
       </ReactQueryProvider>
     );
@@ -27,8 +26,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <ReactQueryProvider>
       <AuthInitProvider>
         <Component {...pageProps} />
-                <Toaster />
-
+        <Toaster />
       </AuthInitProvider>
     </ReactQueryProvider>
   );

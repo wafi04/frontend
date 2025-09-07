@@ -10,7 +10,7 @@ export interface FilterRequest {
   search?: string;
 }
 
-interface Product {
+export interface Product {
   hargaModal: number;
   id: number;
   isActive: boolean;
@@ -71,17 +71,18 @@ export function useGetProductWithProvider(filters?: FilterRequest) {
 
 export function useGetAllSearchProduct(search?: string) {
   const debouncedSearch = useDebounce(search, 500);
+
   const { data, isLoading, error } = useQuery({
-    queryKey: ["search-products", search],
+    queryKey: ["search-products", debouncedSearch],
     queryFn: async () => {
       const req = await api.get<API_RESPONSE<Product[]>>(
         `/products/search?query=${debouncedSearch}`
       );
       return req.data;
     },
-    staleTime: 5 * 6000,
-    gcTime: 5 * 6000,
-    enabled: !!search,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 5 * 60 * 1000,
+    enabled: !!debouncedSearch,
   });
 
   return {
