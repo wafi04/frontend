@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -18,9 +19,10 @@ import {
 } from "@/components/ui/table";
 import { HeaderDashboard } from "@/features/dashboard/components/headerDashboard";
 import { PaymentMethod } from "@/shared/types/method";
-import { Check, Save, Trash2 } from "lucide-react";
+import { Check, Save, Trash2, ChevronDown, ChevronRight } from "lucide-react";
 import { paymentMethodTypes } from "../hooks/typeMethod";
 import { useUpdateMethod } from "../hooks/useUpdateMethod";
+import { TableFees } from "@/shared/features/fees/table";
 
 export function TableMethod({ data }: { data: PaymentMethod[] }) {
   const {
@@ -34,6 +36,22 @@ export function TableMethod({ data }: { data: PaymentMethod[] }) {
     onUpdateSuccess: () => {},
     onDeleteSuccess: () => {},
   });
+
+  // simpan id yang lagi di-expand
+  const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());
+
+  const toggleExpand = (id: number) => {
+    setExpandedRows((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(id)) {
+        newSet.delete(id);
+      } else {
+        newSet.add(id);
+      }
+      return newSet;
+    });
+  };
+
   return (
     <div className="py-4 px-6">
       <HeaderDashboard
@@ -45,22 +63,15 @@ export function TableMethod({ data }: { data: PaymentMethod[] }) {
         <Table>
           <TableHeader>
             <TableRow>
+              <TableHead className="w-[40px]"></TableHead>
               <TableHead className="w-[60px] border-r">ID</TableHead>
               <TableHead className="border-r">Name</TableHead>
               <TableHead className="border-r ">Description</TableHead>
               <TableHead className="border-r">Type</TableHead>
-              <TableHead className="text-center border-r w-[120px]">
-                Kode
-              </TableHead>
-              <TableHead className="text-center border-r w-[100px]">
-                Status
-              </TableHead>
-              <TableHead className="text-center border-r w-[100px]">
-                Min
-              </TableHead>
-              <TableHead className="text-center border-r w-[100px]">
-                Max
-              </TableHead>
+              <TableHead className="text-center border-r w-[120px]">Kode</TableHead>
+              <TableHead className="text-center border-r w-[100px]">Status</TableHead>
+              <TableHead className="text-center border-r w-[100px]">Min</TableHead>
+              <TableHead className="text-center border-r w-[100px]">Max</TableHead>
               <TableHead className="w-[100px]">Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -68,7 +79,7 @@ export function TableMethod({ data }: { data: PaymentMethod[] }) {
             {editingData.length === 0 ? (
               <TableRow>
                 <TableCell
-                  colSpan={7}
+                  colSpan={10}
                   className="h-24 text-center text-muted-foreground"
                 >
                   No categories found.
@@ -76,144 +87,168 @@ export function TableMethod({ data }: { data: PaymentMethod[] }) {
               </TableRow>
             ) : (
               editingData.map((category) => (
-                <TableRow
-                  key={category.id}
-                  className="hover:bg-muted/50 transition-colors"
-                >
-                  <TableCell className="font-medium border-r">
-                    {category.id}
-                  </TableCell>
+                <>
+                  {/* ROW utama */}
+                  <TableRow
+                    key={category.id}
+                    className="hover:bg-muted/50 transition-colors"
+                  >
+                    <TableCell>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-6 w-6"
+                        onClick={() => toggleExpand(category.id)}
+                      >
+                        {expandedRows.has(category.id) ? (
+                          <ChevronDown className="h-4 w-4" />
+                        ) : (
+                          <ChevronRight className="h-4 w-4" />
+                        )}
+                      </Button>
+                    </TableCell>
+                    <TableCell className="font-medium border-r">
+                      {category.id}
+                    </TableCell>
 
-                  <TableCell className="border-r">
-                    <Input
-                      className="border-0 shadow-none focus-visible:ring-0 p-1 h-8"
-                      value={category.name}
-                      onChange={(e) =>
-                        handleFieldChange(category.id, "name", e.target.value)
-                      }
-                      placeholder="Category name"
-                    />
-                  </TableCell>
+                    <TableCell className="border-r">
+                      <Input
+                        className="border-0 shadow-none focus-visible:ring-0 p-1 h-8"
+                        value={category.name}
+                        onChange={(e) =>
+                          handleFieldChange(category.id, "name", e.target.value)
+                        }
+                        placeholder="Category name"
+                      />
+                    </TableCell>
 
-                  <TableCell className="border-r">
-                    <Input
-                      className="border-0 shadow-none focus-visible:ring-0 p-1 h-8"
-                      value={category.description}
-                      onChange={(e) =>
-                        handleFieldChange(
-                          category.id,
-                          "description",
-                          e.target.value
-                        )
-                      }
-                      placeholder="Description"
-                    />
-                  </TableCell>
+                    <TableCell className="border-r">
+                      <Input
+                        className="border-0 shadow-none focus-visible:ring-0 p-1 h-8"
+                        value={category.description}
+                        onChange={(e) =>
+                          handleFieldChange(
+                            category.id,
+                            "description",
+                            e.target.value
+                          )
+                        }
+                        placeholder="Description"
+                      />
+                    </TableCell>
 
-                  <TableCell className="border-r">
-                    <Select
-                      value={category.type}
-                      onValueChange={(value) =>
-                        handleFieldChange(category.id, "type", value)
-                      }
-                    >
-                      <SelectTrigger className="border-0 shadow-none focus:ring-0 h-8 text-sm">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {paymentMethodTypes().map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </TableCell>
+                    <TableCell className="border-r">
+                      <Select
+                        value={category.type}
+                        onValueChange={(value) =>
+                          handleFieldChange(category.id, "type", value)
+                        }
+                      >
+                        <SelectTrigger className="border-0 shadow-none focus:ring-0 h-8 text-sm">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {paymentMethodTypes().map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
 
-                  <TableCell className="border-r">
-                    <Input
-                      type="text"
-                      className="border-0 shadow-none focus-visible:ring-0 p-1 h-8 text-center w-20 mx-auto"
-                      value={category.code}
-                      onChange={(e) =>
-                        handleFieldChange(category.id, "code", e.target.value)
-                      }
-                      min="0"
-                    />
-                  </TableCell>
+                    <TableCell className="border-r text-center">
+                      <Input
+                        type="text"
+                        className="border-0 shadow-none focus-visible:ring-0 p-1 h-8 text-center w-20 mx-auto"
+                        value={category.code}
+                        onChange={(e) =>
+                          handleFieldChange(category.id, "code", e.target.value)
+                        }
+                      />
+                    </TableCell>
 
-                  <TableCell className="text-center border-r">
-                    <Switch
-                      checked={category.status === "active"} // string -> boolean
-                      onCheckedChange={
-                        (checked) =>
+                    <TableCell className="text-center border-r">
+                      <Switch
+                        checked={category.status === "active"}
+                        onCheckedChange={(checked) =>
                           handleFieldChange(
                             category.id,
                             "status",
                             checked ? "active" : "inactive"
-                          ) // boolean -> string
-                      }
-                      className="scale-75 transform translate-y-1"
-                    />
-                  </TableCell>
+                          )
+                        }
+                        className="scale-75 transform translate-y-1"
+                      />
+                    </TableCell>
 
-                  <TableCell className="border-r">
-                    <Input
-                      type="number"
-                      className="border-0 shadow-none focus-visible:ring-0 p-1 h-8 text-center w-20 mx-auto"
-                      value={category.minAmount}
-                      onChange={(e) =>
-                        handleFieldChange(
-                          category.id,
-                          "minAmount",
-                          parseInt(e.target.value) || 0
-                        )
-                      }
-                      min="0"
-                    />
-                  </TableCell>
-                  <TableCell className="border-r">
-                    <Input
-                      type="number"
-                      className="border-0 shadow-none focus-visible:ring-0 p-1 h-8 text-center w-20 mx-auto"
-                      value={category.maxAmount}
-                      onChange={(e) =>
-                        handleFieldChange(
-                          category.id,
-                          "maxAmount",
-                          parseInt(e.target.value) || 0
-                        )
-                      }
-                      min="0"
-                    />
-                  </TableCell>
+                    <TableCell className="border-r text-center">
+                      <Input
+                        type="number"
+                        className="border-0 shadow-none focus-visible:ring-0 p-1 h-8 text-center w-20 mx-auto"
+                        value={category.minAmount}
+                        onChange={(e) =>
+                          handleFieldChange(
+                            category.id,
+                            "minAmount",
+                            parseInt(e.target.value) || 0
+                          )
+                        }
+                        min="0"
+                      />
+                    </TableCell>
+                    <TableCell className="border-r text-center">
+                      <Input
+                        type="number"
+                        className="border-0 shadow-none focus-visible:ring-0 p-1 h-8 text-center w-20 mx-auto"
+                        value={category.maxAmount}
+                        onChange={(e) =>
+                          handleFieldChange(
+                            category.id,
+                            "maxAmount",
+                            parseInt(e.target.value) || 0
+                          )
+                        }
+                        min="0"
+                      />
+                    </TableCell>
 
-                  <TableCell className="flex items-center gap-1.5 ">
-                    <div className="relative">
+                    <TableCell className="flex items-center gap-1.5 ">
+                      <div className="relative">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 bg-green-100 text-green-700"
+                          onClick={() => handleSave(category.id)}
+                          disabled={!unsavedChanges.has(category.id)}
+                        >
+                          <Check className="h-3.5 w-3.5" />
+                        </Button>
+                        {unsavedChanges.has(category.id) && (
+                          <span className="absolute -top-1 -right-1 h-2.5 w-2.5 bg-red-500 rounded-full ring-1 ring-white"></span>
+                        )}
+                      </div>
+
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-8 w-8 bg-green-100 text-green-700"
-                        onClick={() => handleSave(category.id)}
-                        disabled={!unsavedChanges.has(category.id)}
+                        className="h-8 w-8 bg-red-900/60 text-red-700 hover:bg-red-500"
+                        onClick={() => handleDelete(category.id)}
                       >
-                        <Check className="h-3.5 w-3.5" />
+                        <Trash2 className="h-3.5 w-3.5" />
                       </Button>
-                      {unsavedChanges.has(category.id) && (
-                        <span className="absolute -top-1 -right-1 h-2.5 w-2.5 bg-red-500 rounded-full ring-1 ring-white"></span>
-                      )}
-                    </div>
+                    </TableCell>
+                  </TableRow>
 
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 bg-red-900/60 text-red-700 hover:bg-red-500"
-                      onClick={() => handleDelete(category.id)}
-                    >
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </Button>
-                  </TableCell>
-                </TableRow>
+                  {/* ROW detail (expand) */}
+                  {expandedRows.has(category.id) && (
+                    <TableRow>
+                      <TableCell colSpan={10} className="bg-muted/40">
+                        <TableFees referenceId={category.id} />
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </>
               ))
             )}
           </TableBody>

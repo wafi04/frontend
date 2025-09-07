@@ -49,9 +49,7 @@ export function TableFlashSales({ data }: { data: FlashSale[] }) {
               <TableHead className="border-r border-b border-gray-800">
                 Title
               </TableHead>
-              <TableHead className="border-r border-b border-gray-800">
-                Discount
-              </TableHead>
+       
               <TableHead className="border-r border-b border-gray-800">
                 Period
               </TableHead>
@@ -78,30 +76,21 @@ export function TableFlashSales({ data }: { data: FlashSale[] }) {
               </TableRow>
             ) : (
               data.map((sale) => (
-                <TableRow key={sale.ID} className=" hover:bg-muted/30">
+                <TableRow key={sale.id} className=" hover:bg-muted/30">
                   <TableCell className="font-medium border-r border-b border-gray-800">
-                    {sale.Title}
+                    {sale.title}
+                  </TableCell>
+                 
+                  <TableCell className="border-r border-b border-gray-800">
+                    {formatDate(sale.start_at)} – {formatDate(sale.end_at)}
                   </TableCell>
                   <TableCell className="border-r border-b border-gray-800">
-                    {sale.DiscountType === "percentage"
-                      ? `${sale.DiscountValue}%`
-                      : `${sale.DiscountValue}`}
-                    {sale.MaxDiscount && (
-                      <span className="ml-1 text-xs text-muted-foreground border-r border-b border-gray-800">
-                        (&nbsp;Max {FormatCurrency(sale.MaxDiscount)}&nbsp;)
-                      </span>
-                    )}
+                    {sale.usage_limit
+                      ? `${sale.usage_per_user}/${sale.usage_limit}`
+                      : `${sale.usage_per_user}/∞`}
                   </TableCell>
                   <TableCell className="border-r border-b border-gray-800">
-                    {formatDate(sale.StartAt)} – {formatDate(sale.EndAt)}
-                  </TableCell>
-                  <TableCell className="border-r border-b border-gray-800">
-                    {sale.UsageLimit
-                      ? `${sale.UsagePerUser}/${sale.UsageLimit}`
-                      : `${sale.UsagePerUser}/∞`}
-                  </TableCell>
-                  <TableCell className="border-r border-b border-gray-800">
-                    {sale.IsActive ? (
+                    {sale.is_active ? (
                       <span className="text-green-600 font-medium">Active</span>
                     ) : (
                       <span className="text-red-600 font-medium">Inactive</span>
@@ -161,7 +150,7 @@ export function TableFlashSales({ data }: { data: FlashSale[] }) {
         <ProductFlashSale
           isOpen={open}
           onClose={handleCloseDialog}
-          flashSaleId={selectedFlashSale?.ID}
+          flashSaleId={selectedFlashSale?.id}
         />
       )}
       {openEdit && (
@@ -169,20 +158,17 @@ export function TableFlashSales({ data }: { data: FlashSale[] }) {
           open={openEdit}
           onOpen={() => setOpenEdit(false)}
           initialData={{
-            title: selectedFlashSale?.Title as string,
-            description: selectedFlashSale?.Description,
-            start_at: selectedFlashSale?.StartAt as string,
-            end_at: selectedFlashSale?.EndAt as string,
-            discount_type: selectedFlashSale?.DiscountType ?? "percentage",
-            discount_value: selectedFlashSale?.DiscountValue ?? 0,
-            max_discount: selectedFlashSale?.MaxDiscount ?? null,
-            min_purchase: selectedFlashSale?.MinPurchase ?? 0,
-            usage_limit: selectedFlashSale?.UsageLimit ?? null,
-            usage_per_user: selectedFlashSale?.UsagePerUser ?? 1,
-            is_active: selectedFlashSale?.IsActive ?? true,
-            banner_url: selectedFlashSale?.BannerUrl,
+            title: selectedFlashSale?.title as string,
+            description: selectedFlashSale?.description,
+            start_at: selectedFlashSale?.start_at as string,
+            end_at: selectedFlashSale?.end_at as string,
+         
+            usage_limit: selectedFlashSale?.usage_limit ?? null,
+            usage_per_user: selectedFlashSale?.usage_per_user ?? 1,
+            is_active: selectedFlashSale?.is_active ?? true,
+            banner_url: selectedFlashSale?.banner_url,
           }}
-          Id={selectedFlashSale?.ID}
+          Id={selectedFlashSale?.id}
         />
       )}
       {/* Dialog untuk Delete */}
@@ -190,7 +176,7 @@ export function TableFlashSales({ data }: { data: FlashSale[] }) {
         <DialogDelete
           open={openDelete}
           onOpen={() => setOpenDelete(false)}
-          Id={selectedFlashSale?.ID}
+          Id={selectedFlashSale?.id}
         />
       )}
     </>

@@ -3,8 +3,8 @@ export type PaymentMethodType =
   | "ewallet"
   | "qris"
   | "bank-transfer"
-  | "csstore"; // contoh minimarket
-
+  | "csstore";
+  
 export const paymentMethodTypes = () => [
   { name: "Virtual Account", value: "virtual-account" },
   { name: "E-Wallet", value: "e-wallet" },

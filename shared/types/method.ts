@@ -15,7 +15,7 @@ export interface PaymentMethod {
 }
 export type ResponseMethod = {
   type: string;
-  methods: PaymentMethod[];
+  methods: MethodResponseByType[];
 };
 export interface CreateMethodData {
   code: string;
@@ -42,3 +42,20 @@ export interface UpdateMethodData {
   feeType?: string;
   status?: string;
 }
+
+export type MethodResponseByType = {
+  id: number;
+  code: string;
+  name: string;
+  description: string | null;
+  image: string
+  type: "virtual-account" | "e-wallet" | "qris" | string; // bisa diperluas sesuai enum di DB
+  minAmount: number | null;
+  maxAmount: number | null;
+  status: "active" | "inactive" | string;
+  fee_amount: number;
+  fee_percentage: number;
+  calculation_type: "fixed" | "percentage" | "hybrid";
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+};

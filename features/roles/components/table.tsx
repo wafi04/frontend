@@ -46,8 +46,9 @@ export function TableRoles({ roles }: { roles: Roles[] }) {
         data: {
           name: role.name,
           description: role.description,
-          marginProfit: role.marginProfit,
-          marginProfitType: role.marginProfitType,
+          profitPercentage: role.profitPercentage,
+          profit : role.profit,
+          profitType : role.profitType,
           isActive: role.isActive,
         },
       },
@@ -76,9 +77,11 @@ export function TableRoles({ roles }: { roles: Roles[] }) {
           <TableHead className="border border-gray-700">Name</TableHead>
           <TableHead className="border border-gray-700">Description</TableHead>
           <TableHead className="border border-gray-700">
-            Margin Profit
+            Profit Fixed
           </TableHead>
-          <TableHead className="border border-gray-700">Profit Type</TableHead>
+          <TableHead className="border border-gray-700">Profit Percentage</TableHead>
+                    <TableHead className="border border-gray-700">Profit Type</TableHead>
+
           <TableHead className="border border-gray-700">Active</TableHead>
           <TableHead className="border border-gray-700">Actions</TableHead>
         </TableRow>
@@ -106,14 +109,23 @@ export function TableRoles({ roles }: { roles: Roles[] }) {
                 }
               />
             </TableCell>
+             <TableCell className="border border-gray-800">
+              <Input
+                type="number"
+                value={role.profit ?? ""}
+                onChange={(e) =>
+                  updateField(role.id, "profit", Number(e.target.value))
+                }
+              />
+            </TableCell>
 
             {/* Margin Profit */}
             <TableCell className="border border-gray-800">
               <Input
                 type="number"
-                value={role.marginProfit ?? ""}
+                value={role.profitPercentage ?? ""}
                 onChange={(e) =>
-                  updateField(role.id, "marginProfit", Number(e.target.value))
+                  updateField(role.id, "profitPercentage", Number(e.target.value))
                 }
               />
             </TableCell>
@@ -121,9 +133,9 @@ export function TableRoles({ roles }: { roles: Roles[] }) {
             {/* Margin Profit Type */}
             <TableCell className="border border-gray-800">
               <Select
-                value={role.marginProfitType ?? ""}
+                value={role.profitType ?? ""}
                 onValueChange={(val) =>
-                  updateField(role.id, "marginProfitType", val)
+                  updateField(role.id, "profitType", val)
                 }
               >
                 <SelectTrigger>
@@ -131,7 +143,8 @@ export function TableRoles({ roles }: { roles: Roles[] }) {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="percentage">Percentage</SelectItem>
-                  <SelectItem value="fixed">Fixed</SelectItem>
+                  <SelectItem value="fixed">Fixed</SelectItem>   
+                  <SelectItem value="hybrid">hybrid</SelectItem>
                 </SelectContent>
               </Select>
             </TableCell>

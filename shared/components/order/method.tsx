@@ -8,20 +8,12 @@ import { cn } from "@/lib/utils";
 import { useOrder } from "@/shared/hooks/formOrder";
 import { FormatCurrency } from "@/utils/format";
 import { toast } from "sonner";
+import { calculateFee } from "@/utils/calculateFee";
 
 export function MethodSection() {
   const { data } = useGetMethodByType();
   const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
   const { productPrice, selectedMethod, setSelectedMethod } = useOrder();
-
-  const calculateFee = (
-    fee: number,
-    feeType: "fixed" | "percentage"
-  ): number => {
-    return feeType === "percentage"
-      ? Math.round(productPrice * ((selectedMethod?.fee as number) / 100))
-      : fee;
-  };
 
   const handleGroupToggle = (groupType: string) => {
     if (productPrice <= 0) {
@@ -32,10 +24,22 @@ export function MethodSection() {
   };
 
   const handleMethodSelect = (method: any) => {
+    // Calculate fee properly
+    const feeData = {
+      fixed: Number(method.fee_amount) || 0,
+      percentage: Number(method.fee_percentage) || 0,
+    };
+
+    const calculatedFee = calculateFee(
+      productPrice,
+      feeData,
+      method.calculation_type as "fixed" | "percentage" | "hybrid"
+    );
+
     setSelectedMethod({
       code: method.code,
-      fee: method.fee,
-      feeType: method.feeType as "fixed" | "percentage",
+      fee: calculatedFee,
+      feeType: method.calculation_type,
       id: method.id,
       name: method.name,
     });
@@ -46,7 +50,7 @@ export function MethodSection() {
       <HeaderOrder id={3} subName="Pilih Pembayaran" />
 
       <div className="space-y-3 pt-5">
-        {data?.data.map((group) => (
+        {data?.data?.map((group) => (
           <div
             key={group.type}
             className="rounded-lg border border-slate-700 bg-slate-800/40 backdrop-blur-md overflow-hidden"
@@ -55,8 +59,8 @@ export function MethodSection() {
             <button
               type="button"
               onClick={(e) => {
-                e.preventDefault(); // Mencegah default behavior
-                e.stopPropagation(); // Mencegah event bubbling (tanpa parameter)
+                e.preventDefault();
+                e.stopPropagation();
                 handleGroupToggle(group.type);
               }}
               className="flex w-full items-center justify-between transition-colors hover:bg-slate-700/40 focus:outline-none focus:ring-2 focus:ring-primary/50"
@@ -78,7 +82,7 @@ export function MethodSection() {
             {/* Preview methods (ketika collapsed) */}
             {expandedGroup !== group.type && (
               <div className="flex gap-3 justify-end w-full p-4 items-end">
-                {group.methods.slice(0, 4).map((method) => (
+                {group.methods?.slice(0, 4).map((method) => (
                   <div
                     key={method.id}
                     className="relative h-6 w-20 flex-shrink-0 rounded-md"
@@ -98,21 +102,50 @@ export function MethodSection() {
             {expandedGroup === group.type && (
               <div className="border-t border-slate-700 bg-slate-900/60 p-4">
                 <div className="grid gap-3 sm:grid-cols-2">
-                  {group.methods.map((method) => {
+                  {group.methods?.map((method) => {
+                  
+
+                    // Handle empty calculation_type
+                    let calculationType = method.calculation_type;
+                    if (!calculationType || calculationType === "" as string) {
+                      if (
+                        (method.fee_amount === 0 || !method.fee_amount) &&
+                        (method.fee_percentage === 0 || !method.fee_percentage)
+                      ) {
+                        calculationType = "fixed"; 
+                      } else if (method.fee_amount > 0) {
+                        calculationType = "fixed";
+                      } else if (method.fee_percentage > 0) {
+                        calculationType = "percentage";
+                      } else {
+                        calculationType = "fixed";
+                      }
+                    }
+
+                    const feeData = {
+                      fixed: Number(method.fee_amount) || 0,
+                      percentage: Number(method.fee_percentage) || 0,
+                    };
+
                     const fee = calculateFee(
-                      method.fee,
-                      method.feeType as "fixed" | "percentage"
+                      productPrice,
+                      feeData,
+                      calculationType as "fixed" | "percentage" | "hybrid"
                     );
+
                     const total = productPrice + fee;
-                    const isSelected = selectedMethod?.id === method.id;
+                    const isSelected = selectedMethod?.id === method.id
 
                     return (
                       <button
                         key={method.id}
                         onClick={(e) => {
-                          e.preventDefault(); // Mencegah default behavior
-                          e.stopPropagation(); // Mencegah event bubbling (tanpa parameter)
-                          handleMethodSelect(method);
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleMethodSelect({
+                            ...method,
+                            calculation_type: calculationType,
+                          });
                         }}
                         className={cn(
                           "flex w-full items-center justify-between gap-3 rounded-lg border p-3 transition-all",
@@ -135,11 +168,25 @@ export function MethodSection() {
                         </div>
 
                         {productPrice > 0 && (
-                          <div className="flex flex-col items-end text-sm">
-                            <span>Fee: {FormatCurrency(fee)}</span>
-                            <span className="font-medium">
-                              Total: {FormatCurrency(total)}
-                            </span>
+                          <div className="flex flex-col items-end text-sm space-y-1">
+                            <div className="flex items-center gap-1">
+                              <span className="text-slate-400">Fee:</span>
+                              <span
+                                className={`font-medium ${
+                                  fee === 0
+                                    ? "text-green-500"
+                                    : "text-orange-400"
+                                }`}
+                              >
+                                {fee === 0 ? "Gratis" : FormatCurrency(fee)}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <span className="text-slate-400">Total:</span>
+                              <span className="font-semibold text-primary">
+                                {FormatCurrency(total)}
+                              </span>
+                            </div>
                           </div>
                         )}
                       </button>

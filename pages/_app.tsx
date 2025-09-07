@@ -4,6 +4,7 @@ import { ReactQueryProvider } from "@/providers/reactQuery";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
+import { Toaster } from "sonner";
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -15,6 +16,8 @@ export default function App({ Component, pageProps }: AppProps) {
       <ReactQueryProvider>
         <DashboardLayout>
           <Component {...pageProps} />
+                  <Toaster />
+
         </DashboardLayout>
       </ReactQueryProvider>
     );
@@ -24,6 +27,8 @@ export default function App({ Component, pageProps }: AppProps) {
     <ReactQueryProvider>
       <AuthInitProvider>
         <Component {...pageProps} />
+                <Toaster />
+
       </AuthInitProvider>
     </ReactQueryProvider>
   );
